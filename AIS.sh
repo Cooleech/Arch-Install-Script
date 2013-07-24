@@ -44,13 +44,11 @@ echo "Ponovo upišite lozinku za korisnika $Korisnik (neće prikazati unos):"
 stty -echo
 read Lozinka2
 stty echo
-echo "Lozinka1=$Lozinka1
-Lozinka2=$Lozinka2"
 if [ "$Lozinka1" = "$Lozinka2" ]; then
   LozinkaKorisnika="$Lozinka1
 $Lozinka2"
 else
-	read -p "Lozinke se ne podudaraju!
+	read -p "	Lozinke se ne podudaraju!
 	
 	Pritisnite Enter za nastavak..."
 	ENTER_USER_PASS
@@ -71,10 +69,9 @@ if [ "$Lozinka3" = "$Lozinka4" ]; then
 	RootLozinka="$Lozinka3
 $Lozinka4"
 else
-	echo "Lozinke se ne podudaraju!
+	read -p "	Lozinke se ne podudaraju!
 	
 	Pritisnite Enter za nastavak..."
-	read -p ""
 	ENTER_ROOT_PASS
 fi
 }
@@ -119,7 +116,7 @@ fi
 }
 
 function NET_DEVICE {
-rm -f /etc/udev/rules.d/80-net-name-slot.rules # Ako već postoji
+rm -f /etc/udev/rules.d/80-net-name-slot.rules # Ako već postoji, ukloni
 ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
 clear
 echo "
@@ -130,7 +127,7 @@ echo " Upišite koji uređaj želite koristiti:
  (pokušajte sa eth(broj) ili wlan(broj)
 "
 read NetUredjaj
-NetUredjaj="${NetUredjaj,,}" # To lowercase
+NetUredjaj="${NetUredjaj,,}" # U lowercase
 case "$NetUredjaj" in
 wlan*)
 wifi-menu "$NetUredjaj"
@@ -162,7 +159,7 @@ if [ $? != 0 ]; then
 fi
 echo " Bežična mreža? (d/N)"
 read Bezicno
-Bezicno="${Bezicno,,}" # To lowercase
+Bezicno="${Bezicno,,}" # U lowercase
  case "$Bezicno" in
  d*)
  wifi-menu "$NetUredjaj"
@@ -175,8 +172,8 @@ esac
 }
 
 #==============================================================================#
-loadkeys croat # Postavljam tipkovnicu na hrvatski layout
-ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Provjerit ima li smisla da bude i ovde
+loadkeys croat # Postavlja tipkovnicu na hrvatski layout
+ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Provjeri ima li smisla da bude i ovde
 setfont Lat2-Terminus16 # Postavljam font (podržava sva naša slova)
 clear
 echo "
@@ -224,7 +221,7 @@ echo " Upišite ime hosta (bez razmaka, prazno za archlinux):
 "
 read ImeHosta
 ImeHosta="${ImeHosta// /}" # Ukloni razmake
-ImeHosta="${ImeHosta//'@'/AT}" # Zamjeni znak @
+ImeHosta="${ImeHosta//'@'/AT}" # Zamijeni znak @
 if [ "$ImeHosta" = "" ]; then
  ImeHosta="archlinux"
  echo "$ImeHosta"
