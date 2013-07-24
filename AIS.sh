@@ -1,11 +1,11 @@
 #!/bin/sh
- #############################
+################################
 # What:  Arch-Install-Script  #
-# Which: version 5            #
-# Who:   Cooleech             #
-# Under: GPLv2                #
+# Which: version 5           #
+# Who:   Cooleech           #
+# Under: GPLv2               #
 # Contact: cooleech@gmail.com #
- #############################
+################################
 #==============================================================================#
 function USER_NAME {
 echo " Upišite svoje (korisničko) ime:
@@ -48,10 +48,10 @@ if [ "$Lozinka1" = "$Lozinka2" ]; then
   LozinkaKorisnika="$Lozinka1
 $Lozinka2"
 else
-	read -p "	Lozinke se ne podudaraju!
+ read -p " Lozinke se ne podudaraju!
 	
-	Pritisnite Enter za nastavak..."
-	ENTER_USER_PASS
+ Pritisnite Enter za nastavak..."
+ ENTER_USER_PASS
 fi
 }
 
@@ -69,10 +69,10 @@ if [ "$Lozinka3" = "$Lozinka4" ]; then
 	RootLozinka="$Lozinka3
 $Lozinka4"
 else
-	read -p "	Lozinke se ne podudaraju!
+ read -p " Lozinke se ne podudaraju!
 	
-	Pritisnite Enter za nastavak..."
-	ENTER_ROOT_PASS
+ Pritisnite Enter za nastavak..."
+ ENTER_ROOT_PASS
 fi
 }
 
@@ -318,12 +318,13 @@ echo " Stvaram ArchChroot skriptu..."
 
 #==============================================================================#
 echo "#!/bin/sh
-#####################
-# What:  ArchChroot #
-# Which: version 4  #
-# Who:   Cooleech   #
-# Under: GPLv2      #
-#####################
+################################
+# What:  ArchChroot           #
+# Which: version 5           #
+# Who:   Cooleech           #
+# Under: GPLv2               #
+# Contact: cooleech@gmail.com #
+################################
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u \"stara\" imena
 loadkeys croat
 echo \"$RootLozinka\" > /tmp/rootpass
@@ -473,6 +474,7 @@ echo "
 read -p " Enter za reboot..."
 reboot
 
+#### IZBAČENO ALI RADI
 #pacman -S slim
 #systemctl -f enable slim.service
 #echo \" Dodajem korisnika $Korisnik na listu SLiM login managera...\"
