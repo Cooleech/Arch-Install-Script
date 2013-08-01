@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What:  Arch-Install-Script  #
-# Which: version 5           #
+# Which: version 5.1         #
 # Who:   Cooleech           #
 # Under: GPLv2               #
 # Contact: cooleech@gmail.com #
@@ -40,6 +40,12 @@ echo "Upišite lozinku za korisnika $Korisnik (neće prikazati unos):"
 stty -echo
 read Lozinka1
 stty echo
+if [ "$Lozinka1" = "" ]; then
+ read -p " Lozinka ne može biti prazna!
+ 
+ Pritisnite Enter za nastavak..."
+ ENTER_USER_PASS
+fi
 echo "Ponovo upišite lozinku za korisnika $Korisnik (neće prikazati unos):"
 stty -echo
 read Lozinka2
@@ -61,6 +67,12 @@ echo "Upišite lozinku za root korisnika (neće prikazati unos):"
 stty -echo
 read Lozinka3
 stty echo
+if [ "$Lozinka3" = "" ]; then
+ read -p " Lozinka ne može biti prazna!
+ 
+ Pritisnite Enter za nastavak..."
+ ENTER_ROOT_PASS
+fi
 echo "Ponovo upišite lozinku za root korisnika (neće prikazati unos):"
 stty -echo
 read Lozinka4
