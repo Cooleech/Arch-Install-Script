@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What:  Arch-Install-Script  #
-# Which: version 6           #
+# Which: version 6.1         #
 # Who:   Cooleech           #
 # Under: GPLv2               #
 # Contact: cooleech@gmail.com #
@@ -279,7 +279,7 @@ echo " Odaberite jedan od ponuđenih DE-a za instalaciju
 
  0 za preskok instalacije (sami ćete instalirati DE/WM)
  1 za KDE minimal
- 2 za MATE
+ 2 za MATE (ne radi iz nekog razloga :/)
  3 za Xfce4
  4 za LXDE
  5 za Awesome
@@ -338,7 +338,7 @@ echo " Stvaram ArchChroot skriptu..."
 echo "#!/bin/sh
 ################################
 # What:  ArchChroot           #
-# Which: version 6           #
+# Which: version 6.1         #
 # Who:   Cooleech           #
 # Under: GPLv2               #
 # Contact: cooleech@gmail.com #
@@ -428,7 +428,7 @@ echo \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
 3*)
 echo \" Pokrećem instalaciju Xfce4 DE-a...\"
-pacman -S --noconfirm deadbeef file-roller parole thunar-archive-plugin thunar-volman xfce4 xfce4-goodies xfce4-notifyd zenity slim#gvfs-smb
+pacman -S --noconfirm deadbeef file-roller parole thunar-archive-plugin thunar-volman xfce4 xfce4-goodies xfce4-notifyd zenity slim #gvfs-smb
 systemctl -f enable slim.service
 echo \" Dodajem korisnika $Korisnik na listu SLiM login managera...\"
 sed -i 's/#default_user        simone/default_user        $Korisnik/g' /etc/slim.conf
