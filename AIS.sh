@@ -1,11 +1,11 @@
 #!/bin/sh
-################################
-# What:  Arch-Install-Script  #
-# Which: version 6.1         #
-# Who:   Cooleech           #
-# Under: GPLv2               #
-# Contact: cooleech@gmail.com #
-################################
+#################################
+# What:  Arch-Install-Script   #
+# Which: version 6.2          #
+# Who:   Cooleech            #
+# Under: GPLv2                #
+# Contact: cooleechATgmail.com #
+#################################
 #==============================================================================#
 function USER_NAME {
 echo " Upišite svoje (korisničko) ime:
@@ -36,6 +36,8 @@ fi
 
 function ENTER_USER_PASS {
 clear
+Lozinka1=""
+Lozinka2=""
 echo "Upišite lozinku za korisnika $Korisnik (neće prikazati unos):"
 stty -echo
 read Lozinka1
@@ -51,18 +53,20 @@ stty -echo
 read Lozinka2
 stty echo
 if [ "$Lozinka1" = "$Lozinka2" ]; then
-	LozinkaKorisnika="$Lozinka1
+ LozinkaKorisnika="$Lozinka1
 $Lozinka2"
 else
-	read -p "Lozinke se ne podudaraju!
+ read -p "Lozinke se ne podudaraju!
 	
-	Pritisnite Enter za nastavak..."
-	ENTER_USER_PASS
+ Pritisnite Enter za nastavak..."
+ ENTER_USER_PASS
 fi
 }
 
 function ENTER_ROOT_PASS {
 clear
+Lozinka3=""
+Lozinka4=""
 echo "Upišite lozinku za root korisnika (neće prikazati unos):"
 stty -echo
 read Lozinka3
@@ -78,14 +82,13 @@ stty -echo
 read Lozinka4
 stty echo
 if [ "$Lozinka3" = "$Lozinka4" ]; then
-	RootLozinka="$Lozinka3
+ RootLozinka="$Lozinka3
 $Lozinka4"
 else
-	echo "Lozinke se ne podudaraju!
+ read -p "Lozinke se ne podudaraju!
 	
-	Pritisnite Enter za nastavak..."
-	read -p ""
-	ENTER_ROOT_PASS
+ Pritisnite Enter za nastavak..."
+ ENTER_ROOT_PASS
 fi
 }
 
@@ -279,7 +282,7 @@ echo " Odaberite jedan od ponuđenih DE-a za instalaciju
 
  0 za preskok instalacije (sami ćete instalirati DE/WM)
  1 za KDE minimal
- 2 za MATE (ne radi iz nekog razloga :/)
+ 2 za MATE
  3 za Xfce4
  4 za LXDE
  5 za Awesome
@@ -336,13 +339,19 @@ echo " Stvaram ArchChroot skriptu..."
 
 #==============================================================================#
 echo "#!/bin/sh
-################################
-# What:  ArchChroot           #
-# Which: version 6.1         #
-# Who:   Cooleech           #
-# Under: GPLv2               #
-# Contact: cooleech@gmail.com #
-################################
+#################################
+# What:  ArchChroot            #
+# Which: version 6.2          #
+# Who:   Cooleech            #
+# Under: GPLv2                #
+# Contact: cooleechATgmail.com #
+#################################
+
+echo \"
+[mate]
+SigLevel = Optional TrustAll
+Server = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
+
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules
 loadkeys croat
 echo \"$RootLozinka\" > /tmp/rootpass
@@ -415,10 +424,10 @@ echo \"exec startkde\" >> /home/$Korisnik/.xinitrc
 ;;
 2*)
 echo \" Pokrećem instalaciju MATE-a...\"
-echo \"
-[mate]
-SigLevel = Optional TrustAll
-Server = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
+#echo \"
+#[mate]
+#SigLevel = Optional TrustAll
+#Server = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
 pacman -S --noconfirm mate mate-extras gtk-engine-murrine slim
 systemctl -f enable slim.service
 echo \" Dodajem korisnika $Korisnik na listu SLiM login managera...\"
@@ -460,7 +469,9 @@ echo \" INFO:
 esac
 rm -f /root/.bashrc
 rm -f /etc/ArchChroot
+echo \" Upišite exit za izlaz...\"
 exit" > /mnt/etc/ArchChroot
+
 #==================================================================================================#
 clear
 echo "sh /etc/ArchChroot" > /mnt/root/.bashrc
