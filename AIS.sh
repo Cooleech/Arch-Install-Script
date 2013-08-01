@@ -481,7 +481,7 @@ echo "
  Odmontiravanje montiranih particija..."
 if [ "$HomePart" != "" ]; then
  umount /mnt/home
- rm -rf /mnt/mnt/home
+ #rm -rf /mnt/mnt/home # DAFAQ?
 fi
 umount /mnt
 swapoff -a
