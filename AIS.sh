@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What:  Arch-Install-Script  #
-# Which: version 5.1         #
+# Which: version 6           #
 # Who:   Cooleech           #
 # Under: GPLv2               #
 # Contact: cooleech@gmail.com #
@@ -41,7 +41,7 @@ stty -echo
 read Lozinka1
 stty echo
 if [ "$Lozinka1" = "" ]; then
- read -p " Lozinka ne može biti prazna!
+ read -p "Lozinka ne može biti prazna!
  
  Pritisnite Enter za nastavak..."
  ENTER_USER_PASS
@@ -51,13 +51,13 @@ stty -echo
 read Lozinka2
 stty echo
 if [ "$Lozinka1" = "$Lozinka2" ]; then
-  LozinkaKorisnika="$Lozinka1
+	LozinkaKorisnika="$Lozinka1
 $Lozinka2"
 else
- read -p " Lozinke se ne podudaraju!
+	read -p "Lozinke se ne podudaraju!
 	
- Pritisnite Enter za nastavak..."
- ENTER_USER_PASS
+	Pritisnite Enter za nastavak..."
+	ENTER_USER_PASS
 fi
 }
 
@@ -68,7 +68,7 @@ stty -echo
 read Lozinka3
 stty echo
 if [ "$Lozinka3" = "" ]; then
- read -p " Lozinka ne može biti prazna!
+ read -p "Lozinka ne može biti prazna!
  
  Pritisnite Enter za nastavak..."
  ENTER_ROOT_PASS
@@ -81,10 +81,11 @@ if [ "$Lozinka3" = "$Lozinka4" ]; then
 	RootLozinka="$Lozinka3
 $Lozinka4"
 else
- read -p " Lozinke se ne podudaraju!
+	echo "Lozinke se ne podudaraju!
 	
- Pritisnite Enter za nastavak..."
- ENTER_ROOT_PASS
+	Pritisnite Enter za nastavak..."
+	read -p ""
+	ENTER_ROOT_PASS
 fi
 }
 
@@ -128,7 +129,7 @@ fi
 }
 
 function NET_DEVICE {
-rm -f /etc/udev/rules.d/80-net-name-slot.rules # Ako već postoji, ukloni
+rm -f /etc/udev/rules.d/80-net-name-slot.rules # Ako već postoji
 ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
 clear
 echo "
@@ -139,7 +140,7 @@ echo " Upišite koji uređaj želite koristiti:
  (pokušajte sa eth(broj) ili wlan(broj)
 "
 read NetUredjaj
-NetUredjaj="${NetUredjaj,,}" # U lowercase
+NetUredjaj="${NetUredjaj,,}" # To lowercase
 case "$NetUredjaj" in
 wlan*)
 wifi-menu "$NetUredjaj"
@@ -171,7 +172,7 @@ if [ $? != 0 ]; then
 fi
 echo " Bežična mreža? (d/N)"
 read Bezicno
-Bezicno="${Bezicno,,}" # U lowercase
+Bezicno="${Bezicno,,}" # To lowercase
  case "$Bezicno" in
  d*)
  wifi-menu "$NetUredjaj"
@@ -184,8 +185,8 @@ esac
 }
 
 #==============================================================================#
-loadkeys croat # Postavlja tipkovnicu na hrvatski layout
-ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Provjeri ima li smisla da bude i ovde
+loadkeys croat # Postavljam tipkovnicu na hrvatski layout
+ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Provjerit ima li smisla da bude i ovde
 setfont Lat2-Terminus16 # Postavljam font (podržava sva naša slova)
 clear
 echo "
@@ -207,6 +208,12 @@ echo " Upišite brojku particije diska za /home
  (samo brojku, bez /dev/$OdabraniDisk, za preskok samo stisnite Enter):"
 read HomePart
 HomePart="${HomePart//'/dev/$OdabraniDisk'/}" # Za svaki slučaj... :)
+if [ "$HomePart" != "" ]; then
+ echo "
+ Želite li formatirati /dev/$OdabraniDisk$HomePart? (D/n)"
+ read Formatiraj
+ Formatiraj="${Formatiraj,,}"
+fi
 echo " Upišite brojku particije za swap
  (samo brojku, bez /dev/$OdabraniDisk, za preskok samo stisnite Enter):"
 read SwapPart
@@ -233,7 +240,7 @@ echo " Upišite ime hosta (bez razmaka, prazno za archlinux):
 "
 read ImeHosta
 ImeHosta="${ImeHosta// /}" # Ukloni razmake
-ImeHosta="${ImeHosta//'@'/AT}" # Zamijeni znak @
+ImeHosta="${ImeHosta//'@'/AT}" # Zamjeni znak @
 if [ "$ImeHosta" = "" ]; then
  ImeHosta="archlinux"
  echo "$ImeHosta"
@@ -251,6 +258,7 @@ if [ $? != 0 ]; then
  read -p " Pritisnite Enter za nastavak ili Ctrl + C za prekid..."
  NET_DEVICE
 fi
+clear
 echo " Želite li da svi korisnici mogu koristiti root ovlasti (sudo)? (D/n)"
 read DajSudoOvlasti
 DajSudoOvlasti="${DajSudoOvlasti,,}"
@@ -285,12 +293,11 @@ d*)
 TouchpadDriver=" xf86-input-synaptics libsynaptics"
 esac
 clear
+echo " Ok, to bi bilo sve. Imam dovoljno informacija za nastavak instalacije.
+ Samo sjednite i opustite se dok se instalacija ne obavi do kraja. ;)
+"
 echo " Formatiranje particija..."
 if [ "$HomePart" != "" ]; then
- echo "
- Želite li formatirati /dev/$OdabraniDisk$HomePart? (D/n)"
- read Formatiraj
- Formatiraj="${Formatiraj,,}"
  case "$Formatiraj" in
  d*)
  umount -f /mnt/home # Ako je montirana, odmontiraj
@@ -317,8 +324,7 @@ clear
 echo " Bekapiram mirrorlist..."
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiravanje svih mirrora za test brzine
-echo " Dodavanje 5 najbržih mirrora. Ovo će malo potrajat.
- Slobodno popijte kavu, instalacija će se nastaviti. :)"
+echo " Dodavanje 5 najbržih mirrora. Ovo će malo potrajati."
 rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 echo " Osvježavanje liste..."
 pacman -Syy
@@ -332,12 +338,12 @@ echo " Stvaram ArchChroot skriptu..."
 echo "#!/bin/sh
 ################################
 # What:  ArchChroot           #
-# Which: version 5           #
+# Which: version 6           #
 # Who:   Cooleech           #
 # Under: GPLv2               #
 # Contact: cooleech@gmail.com #
 ################################
-ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u \"stara\" imena
+ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules
 loadkeys croat
 echo \"$RootLozinka\" > /tmp/rootpass
 passwd < /tmp/rootpass
@@ -413,8 +419,10 @@ echo \"
 [mate]
 SigLevel = Optional TrustAll
 Server = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
-pacman -S --noconfirm mate mate-extras gtk-engine-murrine #NEKI_DISPLAY_MANAGER
-#systemctl -f enable #NEKI_DISPLAY_MANAGER
+pacman -S --noconfirm mate mate-extras gtk-engine-murrine slim
+systemctl -f enable slim.service
+echo \" Dodajem korisnika $Korisnik na listu SLiM login managera...\"
+sed -i 's/#default_user        simone/default_user        $Korisnik/g' /etc/slim.conf
 echo \" Stvaram .xinitrc datoteku u mapi /home/$Korisnik/\"
 echo \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
@@ -450,23 +458,13 @@ echo \" INFO:
  Nije instaliran nikakav DE/WM!\"
 ;;
 esac
+rm -f /root/.bashrc
 rm -f /etc/ArchChroot
-echo \"
-Za izlazak iz chroota upište:
-
-exit\"" > /mnt/etc/ArchChroot
-
+exit" > /mnt/etc/ArchChroot
 #==================================================================================================#
 clear
-echo " INFO:
-
- Čestitam, prvi dio instalacije je uspješno obavljen!
-
- Za nastavak instalacije pokrenite:
-
- sh /etc/ArchChroot
-"
-arch-chroot /mnt #| $SHELL < /etc/ArchChroot
+echo "sh /etc/ArchChroot" > /mnt/root/.bashrc
+arch-chroot /mnt /bin/bash
 clear
 echo "
  Odmontiravanje montiranih particija..."
@@ -484,13 +482,9 @@ echo "
  Sretno uz novoinstaliran Arch! :)
 "
 read -p " Enter za reboot..."
-reboot
+reboot && eject
 
-#### IZBAČENO ALI RADI
-#pacman -S slim
-#systemctl -f enable slim.service
-#echo \" Dodajem korisnika $Korisnik na listu SLiM login managera...\"
-#sed -i 's/#default_user        simone/default_user        $Korisnik/g' /etc/slim.conf
+### DODATAK SLiM-u - IZBAČENO ALI RADI ###
 #echo \"
 # Želite li pri podizanju sustava automatski biti ulogirani kao $Korisnik? (d/N)\"
 #read AutoLogin
