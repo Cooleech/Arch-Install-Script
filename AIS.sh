@@ -146,7 +146,7 @@ read NetUredjaj
 NetUredjaj="${NetUredjaj,,}" # To lowercase
 case "$NetUredjaj" in
 wlan*)
-wifi-menu "$NetUredjaj"
+wifi-menu -o "$NetUredjaj"
 if [ $? != 0 ]; then
  NET_DEVICE
 fi
@@ -178,7 +178,7 @@ read Bezicno
 Bezicno="${Bezicno,,}" # To lowercase
  case "$Bezicno" in
  d*)
- wifi-menu "$NetUredjaj"
+ wifi-menu -o "$NetUredjaj"
  if [ $? != 0 ]; then
   NET_DEVICE
  fi
@@ -407,7 +407,7 @@ pacman -S --noconfirm ifplugd
 echo \" Konfiguriram netctl...\"
 cp /etc/netctl/examples/ethernet-dhcp /etc/netctl/
 netctl enable ethernet-dhcp
-netctl start ethernet-dhcp
+netctl start ethernet-dhcp ########################### Mislim da na ovo javlja da je u chrootu i da će ignorirat
 systemctl enable netctl-ifplugd@ethernet-dhcp.service
 ;;
 esac
