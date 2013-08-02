@@ -1,7 +1,7 @@
 #!/bin/sh
 #################################
 # What:  Arch-Install-Script   #
-# Which: version 6.2          #
+# Which: version 6.3          #
 # Who:   Cooleech            #
 # Under: GPLv2                #
 # Contact: cooleechATgmail.com #
@@ -341,16 +341,19 @@ echo " Stvaram ArchChroot skriptu..."
 echo "#!/bin/sh
 #################################
 # What:  ArchChroot            #
-# Which: version 6.2          #
+# Which: version 6.3          #
 # Who:   Cooleech            #
 # Under: GPLv2                #
 # Contact: cooleechATgmail.com #
 #################################
 
+case \"$DEzaInst\" in
+2*)
 echo \"
 [mate]
 SigLevel = Optional TrustAll
 Server = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
+esac
 
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules
 loadkeys croat
@@ -424,10 +427,6 @@ echo \"exec startkde\" >> /home/$Korisnik/.xinitrc
 ;;
 2*)
 echo \" Pokrećem instalaciju MATE-a...\"
-#echo \"
-#[mate]
-#SigLevel = Optional TrustAll
-#Server = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
 pacman -S --noconfirm mate mate-extras gtk-engine-murrine slim
 systemctl -f enable slim.service
 echo \" Dodajem korisnika $Korisnik na listu SLiM login managera...\"
@@ -481,7 +480,6 @@ echo "
  Odmontiravanje montiranih particija..."
 if [ "$HomePart" != "" ]; then
  umount /mnt/home
- #rm -rf /mnt/mnt/home # DAFAQ?
 fi
 umount /mnt
 swapoff -a
