@@ -1,4 +1,4 @@
 Arch-Install-Script
 ===================
 
-My script to speed-up Arch Linux install process
+My script to speed-up and simplify Arch Linux install process
