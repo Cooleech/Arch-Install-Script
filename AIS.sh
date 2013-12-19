@@ -229,7 +229,7 @@ fi
 NET_DEVICE
 clear
 echo -e "\n Upišite broj pored DE-a koji želite instalalirati:\n\n \e[36m0\e[0m = \e[36msami ćete kasnije instalirati neki DE ili WM\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE ( minimalni )\n
- 2\e[0m = \e[36mMATE\n\n 3\e[0m = \e[36mXfce4\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
+ 2\e[0m = \e[36mMATE (\e[31mpovremeno zna biti problematičan\e[36m)\n\n 3\e[0m = \e[36mXfce4\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
 case $DEzaInst in
 1*|2*|3*|4*)
