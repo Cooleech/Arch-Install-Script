@@ -370,7 +370,7 @@ case \"$DEzaInst\" in
 2*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
  echo -e \"\n[mate]\nSigLevel = Optional TrustAll\nServer = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
- pacman -Sy --noconfirm deadbeef gnome-mplayer gtk-engine-murrine mate mate-extra slim zenity
+ pacman -Sy --noconfirm deadbeef gnome-mplayer gtk-engine-murrine mate mate-extra mate-file-manager-open-terminal slim zenity
  systemctl enable slim.service
  echo -e \"\n Uključujem numlock pri logiranju...\"
  sed -i 's/# numlock/numlock/g' /etc/slim.conf
