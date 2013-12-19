@@ -334,9 +334,8 @@ echo -e \"polkit.addRule(function(action, subject) {\n\tif (action.id.indexOf(\\
 echo -e \"\n Uređujem ntp.conf...\"
 sed -i 's/pool.ntp.org/pool.ntp.org iburst/g' /etc/ntp.conf
 sed -i 's/www.pool.ntp.org iburst/www.pool.ntp.org/g' /etc/ntp.conf # Fix za link
-echo -e \"\n Podešavam vrijeme pomoću ntpd servisa...\"
+echo -e \"\n Podešavam vrijeme...\"
 ntpd -qg
-echo \" Podešavam sat...\"
 hwclock -w
 case \"$DEzaInst\" in
 2*)
