@@ -1,53 +1,39 @@
 #!/bin/sh
 #################################
-# What:  Arch-Install-Script   #
-# Which: version 6.4          #
-# Who:   Cooleech            #
-# Under: GPLv2                #
-# Contact: cooleechATgmail.com #
+# What	 : Arch-Install-Script	#
+# Which	 : version 6.5-28	#
+# Who	 : Cooleech		#
+# Under  : GPLv2		#
+# E-mail : cooleechATgmail.com	#
 #################################
 #==============================================================================#
 function USER_NAME {
-echo " Upišite svoje (korisničko) ime:
-"
+clear
+echo -e "\n Upišite svoje ( \e[36mkorisničko\e[0m ) ime:\n"
 read Korisnik
 Korisnik="${Korisnik%% *}" # Ostavi samo prvu riječ
 Korisnik="${Korisnik,,}" # Konverzija u lowercase
 clear
 if [ "$Korisnik" = "" ]; then
- Korisnik="archie"
- echo "
- Niste upisali ništa pa je korisničko ime postavljeno automatski:"
+ echo -e "\n \e[1;36m* UPOZORENJE *\e[0m\n Niste upisali korisničko ime...\n"
+ CONTINUE_OR_CANCEL
+ USER_NAME
 fi
-echo "
- Korisničko ime: $Korisnik
-
- Prihvaćate li to ime? (D/n)
-"
-read Prihvat
-Prihvat="${Prihvat,,}" # Konverzija u lowercase
-clear
-case "$Prihvat" in
-n*)
-clear
-USER_NAME
-esac
 }
+
 function ENTER_USER_PASS {
 clear
 Lozinka1=""
 Lozinka2=""
-echo " Upišite lozinku za korisnika $Korisnik (neće prikazati unos):"
+echo -e "\n Upišite lozinku za korisnika \e[1;36m$Korisnik\e[0m ( neće prikazati unos ):"
 stty -echo
 read Lozinka1
 stty echo
 if [ "$Lozinka1" = "" ]; then
- read -p " Lozinka ne može biti prazna!
- 
- Pritisnite Enter za nastavak..."
+ PASSWORD_EMPTY
  ENTER_USER_PASS
 fi
-echo " Ponovo upišite lozinku za korisnika $Korisnik (neće prikazati unos):"
+echo -e "\n Ponovo upišite lozinku za korisnika \e[1;36m$Korisnik\e[0m ( neće prikazati unos ):"
 stty -echo
 read Lozinka2
 stty echo
@@ -55,27 +41,24 @@ if [ "$Lozinka1" = "$Lozinka2" ]; then
  LozinkaKorisnika="$Lozinka1
 $Lozinka2"
 else
- read -p " Lozinke se ne podudaraju!
-	
- Pritisnite Enter za nastavak..."
+ PASSWORD_MISSMATCH
  ENTER_USER_PASS
 fi
 }
+
 function ENTER_ROOT_PASS {
 clear
 Lozinka3=""
 Lozinka4=""
-echo " Upišite lozinku za root korisnika (neće prikazati unos):"
+echo -e "\n Upišite lozinku za \e[1;31mroot\e[0m korisnika ( neće prikazati unos ):"
 stty -echo
 read Lozinka3
 stty echo
 if [ "$Lozinka3" = "" ]; then
- read -p " Lozinka ne može biti prazna!
- 
- Pritisnite Enter za nastavak..."
+ PASSWORD_EMPTY
  ENTER_ROOT_PASS
 fi
-echo " Ponovo upišite lozinku za root korisnika (neće prikazati unos):"
+echo -e "\n Ponovo upišite lozinku za \e[1;31mroot\e[0m korisnika ( neće prikazati unos ):"
 stty -echo
 read Lozinka4
 stty echo
@@ -83,157 +66,159 @@ if [ "$Lozinka3" = "$Lozinka4" ]; then
  RootLozinka="$Lozinka3
 $Lozinka4"
 else
- read -p " Lozinke se ne podudaraju!
-	
- Pritisnite Enter za nastavak..."
+ PASSWORD_MISSMATCH
  ENTER_ROOT_PASS
 fi
 }
+
 function PARTITIONING {
-echo "
- Prikaz dostupnih diskova:"
+clear
+echo -e "\n Prikaz dostupnih diskova:"
 fdisk -l
-echo "
- Upišite koji disk želite patricionirati BEZ /dev/ i BEZ broja (npr. sda):
-"
-read OdabraniDisk
-OdabraniDisk="${OdabraniDisk,,}"
-OdabraniDisk="${OdabraniDisk//'/dev/'/}" # Za svaki slučaj... :)
-cfdisk /dev/$OdabraniDisk
+echo -e "\n Upišite koji disk želite patricionirati ( BEZ \e[35m/dev/\e[0m i BEZ \e[35mbrojke\e[0m, npr. \e[36msda\e[0m ):\n"
+read Disk
+Disk="${Disk,,}"
+Disk="${Disk//'/dev/'/}" # Ukloni /dev/ (za svaki slučaj :))
+cfdisk /dev/$Disk
 if [ $? != 0 ]; then
  clear
- echo " *** GREŠKA ***
-
- Odabrali ste \"$OdabraniDisk\" disk kojemu cfdisk ne može pristupiti.
- Ponovite odabir diska!"
- read -p " Pritisnite Enter za nastavak ili Ctrl + C za prekid..."
- clear
+ echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Odabrali ste \"$Disk\" disk kojemu cfdisk ne može pristupiti.\n Ponovite odabir diska!\n"
+ CONTINUE_OR_CANCEL
  PARTITIONING
 fi
 }
+
 function SEL_ROOT_PARTITION {
 clear
-lsblk /dev/$OdabraniDisk
-echo "
- Upišite brojku particije diska za / (root)
- (samo brojku, bez /dev/$OdabraniDisk):"
+echo -e "\n Pregled stanja particija na disku \e[1;33m/dev/$Disk\e[0m\n"
+lsblk /dev/$Disk
+echo -e "\n Upišite \e[1;36mBROJ\e[0m particije diska za / ( root )\n\t( bez \e[1;33m/dev/$Disk\e[0m, npr. \e[36m 1 \e[0m):"
 read RootPart
+RootPart="${RootPart//'/dev/$Disk'/}" # Za svaki slučaj... :)
 if [ "$RootPart" = "" ]; then
  clear
- read -p " *** GREŠKA ***
-
- Root particija *MORA* biti odabrana!
- 
- Enter za nastavak..."
+ echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Root particija *MORA* biti odabrana!\n"
+ CONTINUE_OR_CANCEL
  SEL_ROOT_PARTITION
 fi
 }
+
 function NET_DEVICE {
-rm -f /etc/udev/rules.d/80-net-name-slot.rules # Ako već postoji
-ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
+ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
 clear
-echo "
- Pregled dostupnih mrežnih uređaja:
-"
-iwconfig
-echo " Upišite koji uređaj želite koristiti:
- (pokušajte sa eth(broj) ili wlan(broj)
-"
-read NetUredjaj
-NetUredjaj="${NetUredjaj,,}" # To lowercase
-case "$NetUredjaj" in
-wlan*)
-wifi-menu -o "$NetUredjaj"
+echo -e "\n Provjeravam konekciju na internet...\n"
+ping -c2 google.com
 if [ $? != 0 ]; then
- NET_DEVICE
-fi
-;;
-eth*)
-ip link set $NetUredjaj up
-if [ $? != 0 ]; then
-read -p " Netočno upisano ime uređaja!
-
- Enter za nastavak..."
- NET_DEVICE
-fi
-;;
-"")
-clear
-read -p " Niste upisali mrežni uređaj!
- To je nužno za uspješan nastavak instalacije!
-
- Enter za nastavak..."
-NET_DEVICE
-;;
-*)
-ip link set $NetUredjaj up
-if [ $? != 0 ]; then
- read -p " Netočno upisano ime uređaja!
-
- Enter za nastavak..."
- NET_DEVICE
-fi
-echo " Bežična mreža? (d/N)"
-read Bezicno
-Bezicno="${Bezicno,,}" # To lowercase
- case "$Bezicno" in
+ echo -e "\n Želite se spojiti bežično? (D/n)"
+ read Spajanje
+ Spajanje="${Spajanje,,}"
+ case "$Spajanje" in
  d*)
- wifi-menu -o "$NetUredjaj"
+  wifi-menu -o
+ ;;
+ esac
+ sleep 2 && ping -c2 google.com
  if [ $? != 0 ]; then
+  echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Nema dostupne internet veze! \e[1;31m:(\e[0m Provjerite kabel ili postavke mrežnog uređaja!
+ Da bi se uspješno obavila, ova instalacija \e[1;37mTREBA\e[0m vezu s internetom.\n"
+  CONTINUE_OR_CANCEL
   NET_DEVICE
  fi
- esac
-;;
-esac
+fi
+echo -e "\n Spojeni ste na internet. \e[1;33m:)\e[0m\n" && sleep 2
+}
+
+function CONTINUE_OR_CANCEL {
+read -p " Pritisnite Enter za nastavak ili Ctrl + C za prekid instalacije..."
+}
+
+function PASSWORD_EMPTY {
+clear
+echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Lozinka ne može biti prazna!\n"
+CONTINUE_OR_CANCEL
+}
+
+function PASSWORD_MISSMATCH {
+clear
+echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Lozinke se ne podudaraju!\n"        
+CONTINUE_OR_CANCEL
 }
 #==============================================================================#
-loadkeys croat # Postavljam tipkovnicu na hrvatski layout
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
 setfont Lat2-Terminus16 # Postavljam font (podržava sva naša slova)
 clear
-echo "
-   *************************************************************************
-   *   Dobrodošli u pojednostavljenu instalaciju Arch Linuxa by Cooleech   *
-   *************************************************************************
-
- Ova skripta je tu da vam maksimalno olakša Arch Linux instalaciju!
- Za početak, prikupit ćemo neke informacije. Pa, krenimo! :)
- 
-"
+echo -e "\n \e[36m********************************************************************************
+ *\tDobrodošli u pojednostavljenu instalaciju \e[1;36mArch Linuxa\e[0m \e[36mby \e[1;36mCooleech\e[0m\t\e[36m*
+ ********************************************************************************\e[0m
+\n\tOva skripta je tu da vam maksimalno olakša Arch Linux instalaciju!\n
+\t\e[31m* * * NAPOMENA: KORISTITE JE NA VLASTITU ODGOVORNOST * * *\n\e[0m
+\tZa početak, prikupit ćemo neke informacije. Pa, krenimo! \e[1;33m:)\e[0m\n\n
+ Koji raspored tipkovnice ( keyboard layout ) želite koristiti?\n\n \e[36m0\e[0m = \e[36mhrvatski\e[0m ( HR ) <= default\n\n \e[36m1\e[0m = \e[36mamerički\e[0m ( US )\n"
+read PostavTipki
+case "$PostavTipki" in
+0*|"")
+ loadkeys croat # Postavi tipkovnicu na hrvatski layout
+ Layout="hr"
+ echo -e "\n \e[1;36mINFO:\e[0m Postavljen je hrvatski (\e[1;36m HR \e[0m) raspored tipkovnice!\n" && CONTINUE_OR_CANCEL
+;;
+1*)
+ loadkeys us # Postavi tipkovnicu na američki layout
+ Layout="us"
+ echo -e "\n \e[1;36mINFO:\e[0m Postavljen je američki (\e[1;36m US \e[0m) raspored tipkovnice!\n" && CONTINUE_OR_CANCEL
+;;
+*)
+ loadkeys us # Postavi tipkovnicu na američki layout
+ Layout="?"
+ echo -e "\n \e[1;36mINFO:\e[0m Pretpostavljam da ste htjeli američku, stoga\n\tpostavljena vam je američka (\e[1;36m US \e[0m) tipkovnica.\n" && CONTINUE_OR_CANCEL
+;;
+esac
+clear
+if [ "$Layout" = "?" ]; then
+ echo -e "\n Upišite raspored tipkovnice koji želite koristiti nakon instalacije\n\t( npr.\e[1;36m DE\e[0m za njemački raspored, ali\e[1;31m pripazite što upisujete\e[0m )\n"
+ read Layout
+ Layout="${Layout,,}"
+ echo -e "\n Raspored tipkovnice nakon instalacije bit će postavljen na \e[1;36m${Layout^^}\e[0m" && CONTINUE_OR_CANCEL
+fi
 USER_NAME
 ENTER_USER_PASS
 ENTER_ROOT_PASS
 PARTITIONING
 SEL_ROOT_PARTITION
-RootPart="${RootPart//'/dev/$OdabraniDisk'/}" # Za svaki slučaj... :)
-echo " Upišite brojku particije diska za /home
- (samo brojku, bez /dev/$OdabraniDisk, za preskok samo stisnite Enter):"
+echo -e "\n Upišite \e[1;36mBROJ\e[0m particije diska za /home\n\t( bez \e[1;33m/dev/$Disk\e[0m, za preskok samo Enter ):"
 read HomePart
-HomePart="${HomePart//'/dev/$OdabraniDisk'/}" # Za svaki slučaj... :)
+HomePart="${HomePart//'/dev/$Disk'/}" # Za svaki slučaj... :)
 if [ "$HomePart" != "" ]; then
- echo "
- Želite li formatirati /dev/$OdabraniDisk$HomePart? (D/n)"
+ echo -e "\n\tŽelite li \e[1;31mformatirati\e[0m /home ( /dev/\e[1;36m$Disk$HomePart\e[0m ) particiju? ( D/n )"
  read Formatiraj
  Formatiraj="${Formatiraj,,}"
 fi
-echo " Upišite brojku particije za swap
- (samo brojku, bez /dev/$OdabraniDisk, za preskok samo stisnite Enter):"
+case "$Formatiraj" in # Potrebno za info prije početka instalacije
+d*|"")
+ if [ "$HomePart" != "" ]; then
+  Formatirati="da, u ext 4\n\t\t( * OPREZ * Svi podaci s /dev/$Disk$HomePart particije bit će izbrisani! )"
+ else
+  Formatirati="nema zasebne /home particije!"
+ fi
+;;
+*)
+ Formatirati="ne"
+;;
+esac
+echo -e "\n Upišite \e[1;36mBROJ\e[0m particije diska za swap\n\t( bez \e[1;33m/dev/$Disk\e[0m, za preskok samo Enter ):"
 read SwapPart
-SwapPart="${SwapPart//'/dev/$OdabraniDisk'/}" # Za svaki slučaj... :)
-if [ "$HomePart" != "" ]; then
- Home=" Home: /dev/$OdabraniDisk$HomePart
- "
- OpcijaHome=" (opcionalno za /home)"
+SwapPart="${SwapPart//'/dev/$Disk'/}" # Za svaki slučaj... :)
+if [ "$HomePart" = "" ]; then
+ Home=" Home: /dev/$Disk$RootPart ( /home niste odvojili na zasebnu particiju )"
+else
+ Home=" Home: /dev/$Disk$HomePart"
 fi
-if [ "$SwapPart" != "" ]; then
- Swap=" Swap: /dev/$OdabraniDisk$SwapPart
- "
+if [ "$SwapPart" = "" ]; then
+ Swap=" Swap: ništa ( niste odabrali swap particiju )"
+else
+ Swap=" Swap: /dev/$Disk$SwapPart"
 fi
 clear
-echo " Upišite ime hosta (bez razmaka, prazno za archlinux):
-
- Enter za nastavak ili Ctrl + C za prekid...
-"
+echo -e "\n Upišite ime hosta ( bez razmaka, samo Enter za \e[36marchlinux\e[0m ):\n"
 read ImeHosta
 ImeHosta="${ImeHosta// /}" # Ukloni razmake
 ImeHosta="${ImeHosta//'@'/AT}" # Zamjeni znak @
@@ -242,125 +227,78 @@ if [ "$ImeHosta" = "" ]; then
  echo "$ImeHosta"
 fi
 NET_DEVICE
-sleep 2 # Daj mreži vremena da proradi
-echo " Pingam google.com..."
-ping -c2 google.com
-if [ $? != 0 ]; then
- echo " *** GREŠKA ***
-
- Nema dostupne internet veze! :( Provjerite kabel ili postavke mrežnog uređaja!
- Da bi se uspješno izvršila, ova instalacija TREBA vezu s internetom!
- "
- read -p " Enter za nastavak ili Ctrl + C za prekid..."
- NET_DEVICE
-fi
 clear
-echo " Želite li da svi korisnici mogu koristiti root ovlasti (sudo)? (D/n)"
-read DajSudoOvlasti
-DajSudoOvlasti="${DajSudoOvlasti,,}"
-case "$DajSudoOvlasti" in
-d*)
-SudoOvlasti="sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers"
-;;
-"")
-SudoOvlasti="sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers"
-esac
-echo " Želite li koristiti wicd za upravljanje mrežnim uređajima? (d/N)"
-read HocuWicd
-HocuWicd="${HocuWicd,,}"
-clear
-echo " Odaberite jedan od ponuđenih DE-a za instalaciju
- (upišite broj željenog DE-a/WM-a, bez upisivanja ili 0 za preskok)
-
- 0 za preskok instalacije (sami ćete instalirati DE/WM)
- 1 za KDE minimal
- 2 za MATE
- 3 za Xfce4
- 4 za LXDE
- 5 za Awesome
-"
+echo -e "\n Upišite broj pored DE-a koji želite instalalirati:\n\n \e[36m0\e[0m = \e[36msami ćete kasnije instalirati neki DE ili WM\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE ( minimalni )\n
+ 2\e[0m = \e[36mMATE\n\n 3\e[0m = \e[36mXfce4\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
 case $DEzaInst in
-2*)
-echo " Želite li pri podizanju sustava automatski biti ulogirani kao $Korisnik? (d/N)"
-read AutoLogin
-AutoLogin="${AutoLogin,,}"
+1*|2*|3*|4*)
+ echo -e "\n\tŽelite li pri podizanju sustava automatski biti ulogirani kao \e[1;36m$Korisnik\e[0m? ( D/n )\n"
+ read AutoLogin
+ AutoLogin="${AutoLogin,,}"
 ;;
-3*)
-echo " Želite li pri podizanju sustava automatski biti ulogirani kao $Korisnik? (d/N)"
-read AutoLogin
-AutoLogin="${AutoLogin,,}"
+*)
+ echo -e "\n \e[1;36mINFO:\e[31m Neće biti instaliran nikakav DE (ili WM),\n pa nakon instalacije možete to napraviti prije izlaska iz chroot okružja. ;)\e[0m\n"
+;;
 esac
-echo " Ovo računalo je prijenosno? (d/N)"
+clear
+echo -e "\n Ovo računalo je prijenosno? ( d/N )\n"
 read Prijenosnik
 Prijenosnik="${Prijenosnik,,}"
 case "$Prijenosnik" in
 d*)
-TouchpadDriver=" xf86-input-synaptics libsynaptics"
+ TouchpadDriver=" xf86-input-synaptics libsynaptics"
+;;
 esac
 clear
-echo "____________________________
- Pregled osnovnih postavki:
-----------------------------
-Korisničko ime: $Korisnik
-Ime hosta: $ImeHosta
-Particije diska:
-"
-lsblk /dev/$OdabraniDisk
-
-read -p " Root: /dev/$OdabraniDisk$RootPart
-$Home$Swap
- To bi bilo to. Imam dovoljno informacija za nastavak instalacije.
- Samo sjednite i opustite se dok se instalacija ne obavi do kraja. ;)
-
-Enter za nastavak ili Ctrl + C za prekid...
-"
+echo -e "\n Pregled važnijih postavki:\n\n Korisničko ime: \e[36m$Korisnik\e[0m\n Ime hosta: \e[36m$ImeHosta\e[0m\n\n Particije diska:\n
+  \e[36mRoot: /dev/$Disk$RootPart\n $Home\n $Swap\e[0m\n\n Formatiranje particija:\n
+  /\t\t\e[36mda, u ext4\e[0m\n  /home\t\t\e[1;31m$Formatirati\e[0m\n  swap\t\t\e[36mda ( ako je odabran )\e[0m\n
+ Tipkovnica: \e[1;36m$Layout\e[0m\n\n To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\n Samo sjednite i opustite se dok se instalacija ne obavi do kraja. ;)\n"
+CONTINUE_OR_CANCEL
 clear
-echo " Formatiranje particija..."
+echo -e "\n Formatiranje particija...\n"
+mkfs.ext4 /dev/$Disk$RootPart && mount /dev/$Disk$RootPart /mnt # Montiraj root particiju
 if [ "$HomePart" != "" ]; then
+ echo -e "\n Stvaram mapu /mnt/home..."
+ mkdir /mnt/home
  case "$Formatiraj" in
  d*)
- umount -f /mnt/home # Ako je montirana, odmontiraj
- mkfs.ext4 /dev/$OdabraniDisk$HomePart
+  echo -e "\n Formatiram /dev/$Disk$HomePart..."
+  umount /dev/$Disk$HomePart # Ako je montirana, odmontiraj
+  mkfs.ext4 /dev/$Disk$HomePart
  ;;
  "")
- umount -f /mnt/home # Ako je montirana, odmontiraj
- mkfs.ext4 /dev/$OdabraniDisk$HomePart
+  echo -e "\n Formatiram /dev/$Disk$HomePart..."
+  umount /dev/$Disk$HomePart # Ako je montirana, odmontiraj
+  mkfs.ext4 /dev/$Disk$HomePart
  ;;
  esac
- mkdir /mnt/home # Napravi mapu za montiranje /home particije
- echo " Montiram particiju na /mnt/home..."
- mount /dev/$OdabraniDisk$HomePart /mnt/home # Montiraj particiju
 fi
-mkfs.ext4 /dev/$OdabraniDisk$RootPart
-echo " Montiram particiju na /mnt..."
-mount /dev/$OdabraniDisk$RootPart /mnt
 if [ "$SwapPart" != "" ]; then
- mkswap /dev/$OdabraniDisk$SwapPart
- echo " Montiram swap particiju..."
- swapon /dev/$OdabraniDisk$SwapPart
+ mkswap /dev/$Disk$SwapPart && swapon /dev/$Disk$SwapPart # Montiraj swap
 fi
 clear
-echo " Bekapiram mirrorlist..."
-cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
-sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiravanje svih mirrora za test brzine
-echo " Dodavanje 5 najbržih mirrora. Ovo će malo potrajati."
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup # Bekapiranje mirrorliste
+sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiraj sve mirrore za test brzine
+echo -e "\n Dodavanje 5 najbržih mirrora. Ovo će malo potrajati.\n\n  U međuvremenu, možete posjetiti stranicu udruge \e[32mSO\e[35mK\e[0m:\n\n\t\e[1;34mhttp://sok.hr\e[0m\n"
 rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
-echo " Osvježavanje liste..."
+clear
+echo -e "\n Osvježavanje liste...\n"
 pacman -Syy
-echo " Instalacija osnovnog sustava..."
+echo -e "\n Instalacija osnovnog sustava...\n"
 pacstrap /mnt base base-devel
-echo " Generiranje fstab datoteke..."
+mount /dev/$Disk$HomePart /mnt/home # Montiraj /home particiju
+echo -e "\n Generiranje fstab datoteke...\n"
 genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/etc/fstab
-echo " Stvaram ArchChroot skriptu..."
 #==============================================================================#
 echo "#!/bin/sh
 #################################
-# What:  ArchChroot            #
-# Which: version 6.4          #
-# Who:   Cooleech            #
-# Under: GPLv2                #
-# Contact: cooleechATgmail.com #
+# What	 : ArchChroot		#
+# Which  : version 6.5-28	#
+# Who	 : Cooleech		#
+# Under	 : GPLv2		#
+# E-mail : cooleechATgmail.com	#
 #################################
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules
 loadkeys croat
@@ -371,142 +309,157 @@ useradd -m -g users -G wheel,storage,power -s /bin/bash $Korisnik
 echo \"$LozinkaKorisnika\" > /tmp/userpass
 passwd $Korisnik < /tmp/userpass
 rm -f /tmp/userpass
-echo \" Generiranje engleskog i hrvatskog jezika...\"
-sed -i 's/#en_US/en_US/g' /etc/locale.gen
+echo -e \"\n Generiranje jezika...\"
+sed -i 's/#en_IE/en_IE/g' /etc/locale.gen
 sed -i 's/#hr_HR/hr_HR/g' /etc/locale.gen
 locale-gen
-echo \"LANG=en_US.UTF-8\" > /etc/locale.conf
-export LANG=en_US.UTF-8
-echo \" Postavljam keymap i font u vconsole.conf...\"
-echo \"KEYMAP=croat
-FONT=Lat2Terminus16\" > /etc/vconsole.conf
-echo \" Postavljam zonu lokalnog vremena...\"
+echo \"LANG=en_IE.UTF-8\" > /etc/locale.conf
+export LANG=en_IE.UTF-8
+echo -e \"\n Postavljam keymap i font u vconsole.conf...\"
+echo -e \"KEYMAP=croat\nFONT=Lat2Terminus16\" > /etc/vconsole.conf
+echo -e \"\n Postavljam zonu lokalnog vremena...\"
 ln -s /usr/share/zoneinfo/Europe/Zagreb /etc/localtime
-echo \" Postavljam hwclock na UTC...\"
+echo -e \"\n Postavljam hwclock na UTC...\"
 hwclock --systohc --utc
-echo \" Postavljam ime hosta ($ImeHosta)...\"
+echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
-pacman -Sy
-pacman -S --noconfirm alsa-plugins alsa-utils dialog dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mesa mtools ntfs-3g ntp os-prober perl-data-dump sudo transmission-gtk ttf-dejavu ttf-droid ttf-liberation ttf-ubuntu-font-family wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools$TouchpadDriver
-echo \"Podešavam gvfs...\"
-echo \"polkit.addRule(function(action, subject) {
-if (action.id.indexOf(\\\"org.freedesktop.udisks2.\\\") == 0){
-       return polkit.Result.YES;
-   }
-}
-);\" > /usr/share/polkit-1/rules.d/10-drives.rules
-echo \" Uređujem ntp.conf...\"
+pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mtools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp os-prober perl-data-dump openssh transmission-gtk ttf-dejavu ttf-droid wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools$TouchpadDriver
+echo -e \"\n Dodajem OpenSSH u systemd...\"
+systemctl enable sshd
+echo -e \"\n Postavljam tipkovnicu na $Layout layout...\"
+echo -e \"Section \\\"InputClass\\\"\n\tIdentifier \\\"system-keyboard\\\"\n\tMatchIsKeyboard \\\"on\\\"\n\tOption \\\"XkbModel\\\" \\\"pc105\\\"
+\tOption \\\"XkbLayout\\\" \\\"$Layout\\\"\n\tOption \\\"XkbVariant\\\" \\\"\\\"\nEndSection\" > /etc/X11/xorg.conf.d/20-keyboard.conf
+echo -e \"\n Podešavam gvfs...\"
+echo -e \"polkit.addRule(function(action, subject) {\n\tif (action.id.indexOf(\\\"org.freedesktop.udisks2.\\\") == 0){\n\t\treturn polkit.Result.YES;\n\t}\n});\" > /usr/share/polkit-1/rules.d/10-drives.rules
+echo -e \"\n Uređujem ntp.conf...\"
 sed -i 's/pool.ntp.org/pool.ntp.org iburst/g' /etc/ntp.conf
-echo \" Podešavam vrijeme pomoću ntpd servisa...\"
+sed -i 's/www.pool.ntp.org iburst/www.pool.ntp.org/g' /etc/ntp.conf # Fix za link
+echo -e \"\n Podešavam vrijeme pomoću ntpd servisa...\"
 ntpd -qg
 echo \" Podešavam sat...\"
 hwclock -w
-case \"\$HocuWicd\" in
-d*)
-echo \"Instaliram wicd i wicd-gtk...\"
-pacman -S --noconfirm wicd wicd-gtk
-systemctl enable wicd.service
-gpasswd -a $Korisnik network
+case \"$DEzaInst\" in
+2*)
+ echo -e \"\n Omogućujem korištenje mate-keyringa...\"
+ echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/mate-keyring --start --components=gpg,pkcs11,secrets,ssh)\nexport MATE_KEYRING_CONTROL MATE_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
 ;;
 *)
-echo \" Instaliram ifplugd...\"
-pacman -S --noconfirm ifplugd
-echo \" Konfiguriram netctl...\"
-cp /etc/netctl/examples/ethernet-dhcp /etc/netctl/
-netctl enable ethernet-dhcp
-systemctl enable netctl-ifplugd@ethernet-dhcp.service
+ echo -e \"\n Instalacija gnome-keyringa...\"
+ pacman -Sy --noconfirm gnome-keyring
+ echo -e \"\n Omogućujem korištenje gnome-keyringa...\"
+ echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)\nexport GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
 ;;
 esac
-echo \"
- Instalacija GRUB bootloadera...\"
-grub-install --target=i386-pc --recheck /dev/$OdabraniDisk
-cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
-grub-mkconfig -o /boot/grub/grub.cfg
-$SudoOvlasti
+echo -e \"\n Konfiguriram Network Manager...\"
+systemctl enable NetworkManager
+systemctl enable NetworkManager-dispatcher.service && systemctl enable ModemManager.service
+echo -e \"\n Dodajem korisnika $Korisnik u network grupu...\"
+gpasswd -a $Korisnik network
+echo -e \"\n Dodajem policy...\"
+echo -e \"polkit.addRule(function(action, subject) {\n\tif (action.id.indexOf(\\\"org.freedesktop.NetworkManager.\\\") == 0 && subject.isInGroup(\\\"network\\\")) {
+	\treturn polkit.Result.YES;\n\t}\n});\" > /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules
+sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and sudo for all
 case \"$DEzaInst\" in
 1*)
-echo \" Pokrećem minimalnu instalaciju KDE-a...\"
-pacman -S --noconfirm kdebase kdebase-workspace kdemultimedia-kmix oxygen-gtk2 oxygen-gtk3 phonon-gstreamer # kde-l10n-en_us kde-l10n-hr_hr
-systemctl enable kdm.service
-echo \" Stvaram .xinitrc datoteku u mapi /home/$Korisnik/\"
-echo \"exec startkde\" >> /home/$Korisnik/.xinitrc
+ echo -e \"\n Pokrećem minimalnu instalaciju KDE-a...\"
+ pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdemultimedia-kmix kdeplasma-applets-plasma-nm oxygen-gtk2 oxygen-gtk3 phonon-gstreamer qmmp vlc
+ systemctl enable kdm.service
+ echo \"auth            optional        pam_gnome_keyring.so\" >> /etc/pam.d/kscreensaver
+ echo -e \"exec startkde\" >> /home/$Korisnik/.xinitrc
 ;;
 2*)
-echo \" Pokrećem instalaciju MATE-a...\"
-echo \"
-[mate]
-SigLevel = Optional TrustAll
-Server = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
-pacman -Sy --noconfirm mate mate-extras gtk-engine-murrine slim
-systemctl enable slim.service
-echo \" Dodajem korisnika $Korisnik na listu SLiM login managera...\"
-sed -i 's/#default_user        simone/default_user        $Korisnik/g' /etc/slim.conf
-case \"\$AutoLogin\" in
-d*)
-echo \" Postavljam auto-login...\"
-sed -i 's/#auto_login          no/auto_login          yes/g' /etc/slim.conf
-esac
-echo \" Stvaram .xinitrc datoteku u mapi /home/$Korisnik/\"
-echo \"exec mate-session\" >> /home/$Korisnik/.xinitrc
+ echo -e \"\n Pokrećem instalaciju MATE-a...\"
+ echo -e \"\n[mate]\nSigLevel = Optional TrustAll\nServer = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
+ pacman -Sy --noconfirm deadbeef gnome-mplayer gtk-engine-murrine mate mate-extras slim zenity
+ systemctl enable slim.service
+ echo -e \"\n Uključujem numlock pri logiranju...\"
+ sed -i 's/# numlock/numlock/g' /etc/slim.conf
+ echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
 3*)
-echo \" Pokrećem instalaciju Xfce4 DE-a...\"
-pacman -S --noconfirm deadbeef file-roller parole thunar-archive-plugin thunar-volman xfce4 xfce4-goodies xfce4-notifyd zenity slim # gvfs-smb
-systemctl enable slim.service
-echo \" Dodajem korisnika $Korisnik na listu SLiM login managera...\"
-sed -i 's/#default_user        simone/default_user        $Korisnik/g' /etc/slim.conf
-case \"\$AutoLogin\" in
-d*)
-echo \" Postavljam auto-login...\"
-sed -i 's/#auto_login          no/auto_login          yes/g' /etc/slim.conf
-esac
-echo \" Stvaram .xinitrc datoteku u mapi /home/$Korisnik/\"
-echo \"exec startxfce4\" >> /home/$Korisnik/.xinitrc
+ echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
+ pacman -Sy --noconfirm deadbeef file-roller parole slim thunar-archive-plugin thunar-volman xfce4 xfce4-goodies xfce4-notifyd zenity
+ systemctl enable slim.service
+ echo -e \"\n Uključujem numlock pri logiranju...\"
+ sed -i 's/# numlock/numlock/g' /etc/slim.conf
+ echo -e \"exec startxfce4\" >> /home/$Korisnik/.xinitrc
 ;;
 4*)
-echo \" Pokrećem instalaciju LXDE-a...\"
-pacman -S --noconfirm file-roller lxde lxdm leafpad gnome-mplayer gnome-themes-standard zenity
-systemctl enable lxdm.service
-echo \" Stvaram .xinitrc datoteku u mapi /home/$Korisnik/\"
-echo \"exec startlxde\" >> /home/$Korisnik/.xinitrc
-;;
-5*)
-echo \" Pokrećem instalaciju Awesome WM-a...\"
-pacman -S --noconfirm awesome
-echo \"exec awesome\" >> /home/$Korisnik/.xinitrc
-;;
-\"\")
-echo \" INFO:
-
- Neće biti instaliran nikakav DE/WM!\"
+ echo -e \"\n Pokrećem instalaciju LXDE-a...\"
+ pacman -Sy --noconfirm deadbeef file-roller gnome-mplayer gnome-themes-standard lxde lxdm leafpad zenity
+ systemctl enable lxdm.service
+ echo -e \"\n Uključujem numlock pri logiranju...\"
+ sed -i 's/# numlock=0/numlock=1/g' /etc/lxdm/lxdm.conf
+ echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
 *)
-echo \" INFO:
-
- Neće biti instaliran nikakav DE/WM!\"
+ echo -e \"\n \e[1;36mINFO:\e[31m Niste odabrali instalaciju DE-a!\e[0m\n\"
 ;;
 esac
+if ! [ -d /home/$Korisnik/Documents ]; then # Dodaj korisničke mape ako ne postoje
+ mkdir /home/$Korisnik/Documents
+fi
+if ! [ -d /home/$Korisnik/Downloads ]; then
+ mkdir /home/$Korisnik/Downloads
+fi
+if ! [ -d /home/$Korisnik/Music ]; then
+ mkdir /home/$Korisnik/Music
+fi
+if ! [ -d /home/$Korisnik/Pictures ]; then
+ mkdir /home/$Korisnik/Pictures
+fi
+if ! [ -d /home/$Korisnik/Public ]; then
+ mkdir /home/$Korisnik/Public
+fi
+if ! [ -d /home/$Korisnik/Templates ]; then
+ mkdir /home/$Korisnik/Templates
+fi
+if ! [ -d /home/$Korisnik/Videos ]; then
+ mkdir /home/$Korisnik/Videos
+fi
+echo -e \"\n Predajem vlasništvo /home/$Korisnik mape korisniku $Korisnik...\"
+chown -R $Korisnik /home/$Korisnik
+echo -e \"\n Radim xdg-user-dirs-update...\"
+xdg-user-dirs-update --force --set DOCUMENTS /home/$Korisnik/Documents # Osvježi xdg-user-dirs
+xdg-user-dirs-update --force --set DOWNLOAD /home/$Korisnik/Downloads
+xdg-user-dirs-update --force --set MUSIC /home/$Korisnik/Music
+xdg-user-dirs-update --force --set PICTURES /home/$Korisnik/Pictures
+xdg-user-dirs-update --force --set PUBLICSHARE /home/$Korisnik/Public
+xdg-user-dirs-update --force --set TEMPLATES /home/$Korisnik/Templates
+xdg-user-dirs-update --force --set VIDEOS /home/$Korisnik/Videos
+case \"$AutoLogin\" in
+d*|\"\")
+ echo -e \"\n Postavljam auto-login...\"
+ if [ -e /usr/share/config/kdm/kdmrc ]; then
+  sed -i 's/#AutoLoginUser=fred/AutoLoginUser=$Korisnik/g' /usr/share/config/kdm/kdmrc
+  sed -i 's/#AutoLoginEnable/AutoLoginEnable/g' /usr/share/config/kdm/kdmrc
+ fi
+ if [ -e /etc/slim.conf ]; then
+  sed -i 's/#default_user/default_user/g' /etc/slim.conf && sed -i 's/simone/$Korisnik/g' /etc/slim.conf
+  sed -i 's/#auto_login          no/auto_login          yes/g' /etc/slim.conf
+ fi
+ if [ -e /etc/lxdm/lxdm.conf ]; then
+  sed -i 's/# autologin=dgod/autologin=$Korisnik/g' /etc/lxdm/lxdm.conf
+ fi
+;;
+esac
+echo -e \"\n Instalacija GRUB bootloadera...\"
+grub-install --target=i386-pc --recheck /dev/$Disk
+echo -e \"\n Kopiranje GRUB poruka...\"
+cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+echo -e \"# fix broken grub.cfg gen\nGRUB_DISABLE_SUBMENU=y\" >> /etc/default/grub # Popravi GRUB konfiguraciju
+echo -e \"\n Konfiguracija GRUB bootloadera...\"
+grub-mkconfig -o /boot/grub/grub.cfg
 rm -f /root/.bashrc
 rm -f /etc/ArchChroot
-echo \" Upišite exit za izlaz...\"
-exit 0" > /mnt/etc/ArchChroot
+echo -e \"\n Upišite exit za izlaz iz chroota...\"" > /mnt/etc/ArchChroot
 #==================================================================================================#
 echo "sh /etc/ArchChroot" > /mnt/root/.bashrc
 arch-chroot /mnt /bin/bash
 clear
-echo "
- Odmontiravanje montiranih particija..."
-if [ "$HomePart" != "" ]; then
- umount /mnt/home
-fi
-umount /mnt
+echo -e "\n Odmontiravanje montiranih particija..."
+umount -R /mnt
 swapoff -a
-echo "
- ****************************
- * * * KRAJ INSTALACIJE * * *
- ****************************
-
- Sretno uz novoinstaliran Arch! :)
-"
+echo -e "\n\e[36m*********************************\n*\t\e[37mKRAJ INSTALACIJE\e[36m\t*\n*********************************\e[0m\n\n Sretno uz novoinstalirani \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
 read -p " Enter za reboot..."
 reboot
