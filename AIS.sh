@@ -1,7 +1,7 @@
 #!/bin/sh
 #################################
 # What	 : Arch-Install-Script	#
-# Which	 : version 6.5-28	#
+# Which	 : version 6.5-29	#
 # Who	 : Cooleech		#
 # Under  : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -295,7 +295,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 #################################
 # What	 : ArchChroot		#
-# Which  : version 6.5-28	#
+# Which  : version 6.5-29	#
 # Who	 : Cooleech		#
 # Under	 : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -450,10 +450,9 @@ echo -e \"# fix broken grub.cfg gen\nGRUB_DISABLE_SUBMENU=y\" >> /etc/default/gr
 echo -e \"\n Konfiguracija GRUB bootloadera...\"
 grub-mkconfig -o /boot/grub/grub.cfg
 rm -f /root/.bashrc
-rm -f /etc/ArchChroot
-echo -e \"\n Upišite exit za izlaz iz chroota...\"" > /mnt/etc/ArchChroot
+rm -f /etc/ArchChroot\"" > /mnt/etc/ArchChroot
 #==================================================================================================#
-echo "sh /etc/ArchChroot" > /mnt/root/.bashrc
+echo -e "sh /etc/ArchChroot\nexit" > /mnt/root/.bashrc
 arch-chroot /mnt /bin/bash
 clear
 echo -e "\n Odmontiravanje montiranih particija..."
