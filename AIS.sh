@@ -197,7 +197,7 @@ d*|"")
  if [ "$HomePart" != "" ]; then
   Formatirati="da, u ext 4\n\t\t( * OPREZ * Svi podaci s /dev/$Disk$HomePart particije bit će izbrisani! )"
  else
-  Formatirati="nema zasebne /home particije!"
+  Formatirati="\e[32mnema zasebne /home particije\e[0m"
  fi
 ;;
 *)
