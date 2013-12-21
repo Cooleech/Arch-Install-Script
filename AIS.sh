@@ -1,7 +1,7 @@
 #!/bin/sh
 #################################
 # What	 : Arch-Install-Script	#
-# Which	 : version 6.5-29	#
+# Which	 : version 6.5-30	#
 # Who	 : Cooleech		#
 # Under  : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -125,11 +125,12 @@ if [ $? != 0 ]; then
   NET_DEVICE
  fi
 fi
-echo -e "\n Spojeni ste na internet. \e[1;33m:)\e[0m\n" && sleep 2
+echo -e "\n \e[1;32mSpojeni ste na internet. \e[33m:)\e[0m\n" && sleep 1
 }
 
 function CONTINUE_OR_CANCEL {
-read -p " Pritisnite Enter za nastavak ili Ctrl + C za prekid instalacije..."
+echo -e " Pritisnite \e[1;32mEnter\e[0m za nastavak ili \e[1;31mCtrl\e[0m + \e[1;31mC\e[0m za prekid instalacije..."
+read -p ""
 }
 
 function PASSWORD_EMPTY {
@@ -228,10 +229,10 @@ if [ "$ImeHosta" = "" ]; then
 fi
 NET_DEVICE
 clear
-echo -e "\n Upišite broj pored DE-a koji želite instalalirati:\n\n \e[36m0\e[0m = \e[36msami ćete kasnije instalirati neki DE ili WM\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE ( minimalni )\n
+echo -e "\n Upišite broj pored DE-a koji želite instalalirati:\n\n \e[36m0\e[0m = \e[36msami ćete kasnije instalirati neki DE ili WM\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE\n
  2\e[0m = \e[36mMATE (\e[31mpovremeno zna biti problematičan\e[36m)\n\n 3\e[0m = \e[36mXfce4\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
-case $DEzaInst in
+case "$DEzaInst" in
 1*|2*|3*|4*)
  echo -e "\n\tŽelite li pri podizanju sustava automatski biti ulogirani kao \e[1;36m$Korisnik\e[0m? ( D/n )\n"
  read AutoLogin
@@ -239,6 +240,21 @@ case $DEzaInst in
 ;;
 *)
  echo -e "\n \e[1;36mINFO:\e[31m Neće biti instaliran nikakav DE (ili WM),\n pa nakon instalacije možete to napraviti prije izlaska iz chroot okružja. ;)\e[0m\n"
+;;
+esac
+case "$DEzaInst" in
+1*|2*|3*|4*)
+ echo -e "\n Želite li imati uključen Num Lock pri logiranju u sustav? (D/n))\n"
+ read NumLock
+ NumLock="${NumLock,,}"
+ case "$NumLock" in
+ d*|"")
+  NumLock="da\e[0m ( bit će uključen pri logiranju )"
+ ;;
+ *)
+  NumLock="ne\e[0m ( neće biti uključen pri logiranju )"
+ ;;
+ esac
 ;;
 esac
 clear
@@ -251,10 +267,10 @@ d*)
 ;;
 esac
 clear
-echo -e "\n Pregled važnijih postavki:\n\n Korisničko ime: \e[36m$Korisnik\e[0m\n Ime hosta: \e[36m$ImeHosta\e[0m\n\n Particije diska:\n
+echo -e "\n Pregled važnijih postavki:\n\n Korisničko ime: \e[36m$Korisnik\e[0m\n Ime hosta:\t \e[36m$ImeHosta\e[0m\n\n Particije diska:\n
   \e[36mRoot: /dev/$Disk$RootPart\n $Home\n $Swap\e[0m\n\n Formatiranje particija:\n
   /\t\t\e[36mda, u ext4\e[0m\n  /home\t\t\e[1;31m$Formatirati\e[0m\n  swap\t\t\e[36mda ( ako je odabran )\e[0m\n
- Tipkovnica: \e[1;36m$Layout\e[0m\n\n To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\n Samo sjednite i opustite se dok se instalacija ne obavi do kraja. ;)\n"
+ Tipkovnica:\t\e[1;36m$Layout\e[0m\n Num Lock:\t\e[1;32m$NumLock\n\n To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\n Samo sjednite i opustite se dok se instalacija ne obavi do kraja. ;)\n"
 CONTINUE_OR_CANCEL
 clear
 echo -e "\n Formatiranje particija...\n"
@@ -295,7 +311,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 #################################
 # What	 : ArchChroot		#
-# Which  : version 6.5-29	#
+# Which  : version 6.5-30	#
 # Who	 : Cooleech		#
 # Under	 : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -371,28 +387,37 @@ case \"$DEzaInst\" in
  echo -e \"\n[mate]\nSigLevel = Optional TrustAll\nServer = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
  pacman -Sy --noconfirm deadbeef gnome-mplayer gtk-engine-murrine mate mate-extra mate-file-manager-open-terminal slim zenity
  systemctl enable slim.service
- echo -e \"\n Uključujem numlock pri logiranju...\"
- sed -i 's/# numlock/numlock/g' /etc/slim.conf
  echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
 3*)
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
  pacman -Sy --noconfirm deadbeef file-roller parole slim thunar-archive-plugin thunar-volman xfce4 xfce4-goodies xfce4-notifyd zenity
  systemctl enable slim.service
- echo -e \"\n Uključujem numlock pri logiranju...\"
- sed -i 's/# numlock/numlock/g' /etc/slim.conf
  echo -e \"exec startxfce4\" >> /home/$Korisnik/.xinitrc
 ;;
 4*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
  pacman -Sy --noconfirm deadbeef file-roller gnome-mplayer gnome-themes-standard lxde lxdm leafpad zenity
  systemctl enable lxdm.service
- echo -e \"\n Uključujem numlock pri logiranju...\"
- sed -i 's/# numlock=0/numlock=1/g' /etc/lxdm/lxdm.conf
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
 *)
  echo -e \"\n \e[1;36mINFO:\e[31m Niste odabrali instalaciju DE-a!\e[0m\n\"
+;;
+esac
+case \"$NumLock\" in
+d*)
+ if [ -e /usr/share/config/kdm/kdmrc ]; then
+  sed -i 's/#NumLock=Off/NumLock=On/g' /usr/share/config/kdm/kdmrc
+ fi
+ if [ -e /etc/slim.conf ]; then
+  echo -e \"\n Uključujem numlock pri logiranju...\"
+  sed -i 's/# numlock/numlock/g' /etc/slim.conf
+ fi
+ if [ -e /etc/lxdm/lxdm.conf ]; then
+  echo -e \"\n Uključujem numlock pri logiranju...\"
+  sed -i 's/# numlock=0/numlock=1/g' /etc/lxdm/lxdm.conf
+ fi
 ;;
 esac
 if ! [ -d /home/$Korisnik/Documents ]; then # Dodaj korisničke mape ako ne postoje
