@@ -407,15 +407,14 @@ case \"$DEzaInst\" in
 esac
 case \"$NumLock\" in
 d*)
+ echo -e \"\n Uključujem numlock pri logiranju...\"
  if [ -e /usr/share/config/kdm/kdmrc ]; then
   sed -i 's/#NumLock=Off/NumLock=On/g' /usr/share/config/kdm/kdmrc
  fi
  if [ -e /etc/slim.conf ]; then
-  echo -e \"\n Uključujem numlock pri logiranju...\"
   sed -i 's/# numlock/numlock/g' /etc/slim.conf
  fi
  if [ -e /etc/lxdm/lxdm.conf ]; then
-  echo -e \"\n Uključujem numlock pri logiranju...\"
   sed -i 's/# numlock=0/numlock=1/g' /etc/lxdm/lxdm.conf
  fi
 ;;
