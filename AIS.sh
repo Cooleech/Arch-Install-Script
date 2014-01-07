@@ -196,7 +196,7 @@ fi
 case "$Formatiraj" in # Potrebno za info prije početka instalacije
 d*|"")
  if [ "$HomePart" != "" ]; then
-  Formatirati="da, u ext 4\n\t\t( * OPREZ * Svi podaci s /dev/$Disk$HomePart particije bit će izbrisani! )"
+  Formatirati="da, u ext4\n\t\t( * OPREZ * Svi podaci s /dev/$Disk$HomePart particije bit će izbrisani! )"
  else
   Formatirati="\e[32mnema zasebne /home particije\e[0m"
  fi
@@ -230,7 +230,7 @@ fi
 NET_DEVICE
 clear
 echo -e "\n Upišite broj pored DE-a koji želite instalalirati:\n\n \e[36m0\e[0m = \e[36msami ćete kasnije instalirati neki DE ili WM\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE\n
- 2\e[0m = \e[36mMATE (\e[31mpovremeno zna biti problematičan\e[36m)\n\n 3\e[0m = \e[36mXfce4\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
+ 2\e[0m = \e[36mMATE (\e[31mpovremeno zna biti problematičan\e[36m)\n\n 3\e[0m = \e[36mXfce\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
 case "$DEzaInst" in
 1*|2*|3*|4*)
