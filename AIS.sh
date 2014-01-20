@@ -1,7 +1,7 @@
 #!/bin/sh
 #################################
 # What	 : Arch-Install-Script	#
-# Which	 : version 6.5-30	#
+# Which	 : version 6.5-31	#
 # Who	 : Cooleech		#
 # Under  : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -230,7 +230,7 @@ fi
 NET_DEVICE
 clear
 echo -e "\n Upišite broj pored DE-a koji želite instalalirati:\n\n \e[36m0\e[0m = \e[36msami ćete kasnije instalirati neki DE ili WM\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE\n
- 2\e[0m = \e[36mMATE (\e[31mpovremeno zna biti problematičan\e[36m)\n\n 3\e[0m = \e[36mXfce\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
+ 2\e[0m = \e[36mMATE\n\n 3\e[0m = \e[36mXfce\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
 case "$DEzaInst" in
 1*|2*|3*|4*)
@@ -311,7 +311,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 #################################
 # What	 : ArchChroot		#
-# Which  : version 6.5-30	#
+# Which  : version 6.5-31	#
 # Who	 : Cooleech		#
 # Under	 : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -384,7 +384,6 @@ case \"$DEzaInst\" in
 ;;
 2*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
- echo -e \"\n[mate]\nSigLevel = Optional TrustAll\nServer = http://repo.mate-desktop.org/archlinux/$(uname -m)\" >> /etc/pacman.conf
  pacman -Sy --noconfirm deadbeef gnome-mplayer gtk-engine-murrine mate mate-extra mate-file-manager-open-terminal slim zenity
  systemctl enable slim.service
  echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
