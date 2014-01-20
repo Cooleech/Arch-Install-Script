@@ -234,7 +234,7 @@ echo -e "\n Upišite broj pored DE-a koji želite instalalirati:\n\n \e[36m0\e[0
 read DEzaInst
 case "$DEzaInst" in
 1*|2*|3*|4*)
- echo -e "\n\tŽelite li pri podizanju sustava automatski biti ulogirani kao \e[1;36m$Korisnik\e[0m? ( D/n )\n"
+ echo -e "\n Želite li pri podizanju sustava automatski biti ulogirani kao \e[1;36m$Korisnik\e[0m? ( D/n )\n"
  read AutoLogin
  AutoLogin="${AutoLogin,,}"
 ;;
