@@ -270,7 +270,7 @@ clear
 echo -e "\n Pregled važnijih postavki:\n\n Korisničko ime: \e[36m$Korisnik\e[0m\n Ime hosta:\t \e[36m$ImeHosta\e[0m\n\n Particije diska:\n
   \e[36mRoot: /dev/$Disk$RootPart\n $Home\n $Swap\e[0m\n\n Formatiranje particija:\n
   /\t\t\e[36mda, u ext4\e[0m\n  /home\t\t\e[1;31m$Formatirati\e[0m\n  swap\t\t\e[36mda ( ako je odabran )\e[0m\n
- Tipkovnica:\t\e[1;36m$Layout\e[0m\n Num Lock:\t\e[1;32m$NumLock\n\n To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\n Samo sjednite i opustite se dok se instalacija ne obavi do kraja. ;)\n"
+ Tipkovnica:\t\e[1;36m${Layout^^}\e[0m\n Num Lock:\t\e[1;32m$NumLock\n\n To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\n Samo sjednite i opustite se dok se instalacija ne obavi do kraja. ;)\n"
 CONTINUE_OR_CANCEL
 clear
 echo -e "\n Formatiranje particija...\n"
