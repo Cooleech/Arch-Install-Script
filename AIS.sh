@@ -41,7 +41,7 @@ if [ "$Lozinka1" = "$Lozinka2" ]; then
  LozinkaKorisnika="$Lozinka1
 $Lozinka2"
 else
- PASSWORD_MISSMATCH
+ PASSWORD_MISMATCH
  ENTER_USER_PASS
 fi
 }
@@ -66,7 +66,7 @@ if [ "$Lozinka3" = "$Lozinka4" ]; then
  RootLozinka="$Lozinka3
 $Lozinka4"
 else
- PASSWORD_MISSMATCH
+ PASSWORD_MISMATCH
  ENTER_ROOT_PASS
 fi
 }
@@ -139,7 +139,7 @@ echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Lozinka ne može biti prazna!\n"
 CONTINUE_OR_CANCEL
 }
 
-function PASSWORD_MISSMATCH {
+function PASSWORD_MISMATCH {
 clear
 echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Lozinke se ne podudaraju!\n"        
 CONTINUE_OR_CANCEL
