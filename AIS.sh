@@ -250,7 +250,7 @@ case "$DEzaInst" in
  esac
 ;;
 *)
- echo -e "\n \e[1;36mINFO:\e[31m Neće biti instaliran nikakav DE (ili WM),\n pa nakon instalacije možete sami odabrati koji DE/WM želite. ;)\e[0m\n"
+ echo -e "\n \e[1;36mINFO:\e[31m Neće biti instaliran nikakav DE (ili WM),\n pa nakon instalacije možete sami instalirati što želite. ;)\e[0m\n"
  NumLock="ne\e[0m"
  CONTINUE_OR_CANCEL
 ;;
