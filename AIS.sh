@@ -237,13 +237,6 @@ case "$DEzaInst" in
  echo -e "\n Želite li pri podizanju sustava automatski biti ulogirani kao \e[1;36m$Korisnik\e[0m? ( D/n )\n"
  read AutoLogin
  AutoLogin="${AutoLogin,,}"
-;;
-*)
- echo -e "\n \e[1;36mINFO:\e[31m Neće biti instaliran nikakav DE (ili WM),\n pa nakon instalacije možete to napraviti prije izlaska iz chroot okružja. ;)\e[0m\n"
-;;
-esac
-case "$DEzaInst" in
-1*|2*|3*|4*)
  echo -e "\n Želite li imati uključen Num Lock pri logiranju u sustav? (D/n))\n"
  read NumLock
  NumLock="${NumLock,,}"
@@ -255,6 +248,11 @@ case "$DEzaInst" in
   NumLock="ne\e[0m ( neće biti uključen pri logiranju )"
  ;;
  esac
+;;
+*)
+ echo -e "\n \e[1;36mINFO:\e[31m Neće biti instaliran nikakav DE (ili WM),\n pa nakon instalacije možete to napraviti prije izlaska iz chroot okružja. ;)\e[0m\n"
+ NumLock="ne\e[0m"
+ CONTINUE_OR_CANCEL
 ;;
 esac
 clear
