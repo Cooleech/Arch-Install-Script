@@ -416,37 +416,37 @@ d*)
  fi
 ;;
 esac
-# if ! [ -d /home/$Korisnik/Documents ]; then # Dodaj korisničke mape ako ne postoje
-#  mkdir /home/$Korisnik/Documents
-# fi
-# if ! [ -d /home/$Korisnik/Downloads ]; then
-#  mkdir /home/$Korisnik/Downloads
-# fi
-# if ! [ -d /home/$Korisnik/Music ]; then
-#  mkdir /home/$Korisnik/Music
-# fi
-# if ! [ -d /home/$Korisnik/Pictures ]; then
-#  mkdir /home/$Korisnik/Pictures
-# fi
-# if ! [ -d /home/$Korisnik/Public ]; then
-#  mkdir /home/$Korisnik/Public
-# fi
-# if ! [ -d /home/$Korisnik/Templates ]; then
-#  mkdir /home/$Korisnik/Templates
-# fi
-# if ! [ -d /home/$Korisnik/Videos ]; then
-#  mkdir /home/$Korisnik/Videos
-# fi
+if ! [ -d /home/$Korisnik/Documents ]; then # Dodaj korisničke mape ako ne postoje
+ mkdir /home/$Korisnik/Documents
+fi
+if ! [ -d /home/$Korisnik/Downloads ]; then
+ mkdir /home/$Korisnik/Downloads
+fi
+if ! [ -d /home/$Korisnik/Music ]; then
+ mkdir /home/$Korisnik/Music
+fi
+if ! [ -d /home/$Korisnik/Pictures ]; then
+ mkdir /home/$Korisnik/Pictures
+fi
+if ! [ -d /home/$Korisnik/Public ]; then
+ mkdir /home/$Korisnik/Public
+fi
+if ! [ -d /home/$Korisnik/Templates ]; then
+ mkdir /home/$Korisnik/Templates
+fi
+if ! [ -d /home/$Korisnik/Videos ]; then
+ mkdir /home/$Korisnik/Videos
+fi
 echo -e \"\n Predajem vlasništvo /home/$Korisnik mape korisniku $Korisnik...\"
 chown -R $Korisnik /home/$Korisnik
-# echo -e \"\n Radim xdg-user-dirs-update...\"
-# xdg-user-dirs-update --force --set DOCUMENTS /home/$Korisnik/Documents # Osvježi xdg-user-dirs
-# xdg-user-dirs-update --force --set DOWNLOAD /home/$Korisnik/Downloads
-# xdg-user-dirs-update --force --set MUSIC /home/$Korisnik/Music
-# xdg-user-dirs-update --force --set PICTURES /home/$Korisnik/Pictures
-# xdg-user-dirs-update --force --set PUBLICSHARE /home/$Korisnik/Public
-# xdg-user-dirs-update --force --set TEMPLATES /home/$Korisnik/Templates
-# xdg-user-dirs-update --force --set VIDEOS /home/$Korisnik/Videos
+echo -e \"\n Radim xdg-user-dirs-update...\"
+xdg-user-dirs-update --force --set DOCUMENTS /home/$Korisnik/Documents # Osvježi xdg-user-dirs
+xdg-user-dirs-update --force --set DOWNLOAD /home/$Korisnik/Downloads
+xdg-user-dirs-update --force --set MUSIC /home/$Korisnik/Music
+xdg-user-dirs-update --force --set PICTURES /home/$Korisnik/Pictures
+xdg-user-dirs-update --force --set PUBLICSHARE /home/$Korisnik/Public
+xdg-user-dirs-update --force --set TEMPLATES /home/$Korisnik/Templates
+xdg-user-dirs-update --force --set VIDEOS /home/$Korisnik/Videos
 case \"$AutoLogin\" in
 d*|\"\")
  echo -e \"\n Postavljam auto-login...\"
