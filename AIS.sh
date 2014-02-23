@@ -1,7 +1,7 @@
 #!/bin/sh
 #################################
 # What	 : Arch-Install-Script	#
-# Which	 : version 6.5-31	#
+# Which	 : version 6.5-32	#
 # Who	 : Cooleech		#
 # Under  : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -277,12 +277,7 @@ if [ "$HomePart" != "" ]; then
  echo -e "\n Stvaram mapu /mnt/home..."
  mkdir /mnt/home
  case "$Formatiraj" in
- d*)
-  echo -e "\n Formatiram /dev/$Disk$HomePart..."
-  umount /dev/$Disk$HomePart # Ako je montirana, odmontiraj
-  mkfs.ext4 /dev/$Disk$HomePart
- ;;
- "")
+ d*|"")
   echo -e "\n Formatiram /dev/$Disk$HomePart..."
   umount /dev/$Disk$HomePart # Ako je montirana, odmontiraj
   mkfs.ext4 /dev/$Disk$HomePart
