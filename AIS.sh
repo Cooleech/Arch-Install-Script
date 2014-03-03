@@ -304,7 +304,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 #################################
 # What	 : ArchChroot		#
-# Which  : version 6.5-31	#
+# Which  : version 6.5-32	#
 # Who	 : Cooleech		#
 # Under	 : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -332,7 +332,7 @@ echo -e \"\n Postavljam hwclock na UTC...\"
 hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
-pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mtools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp os-prober p7zip perl-data-dump openssh transmission-gtk ttf-dejavu ttf-droid wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools$TouchpadDriver
+pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mtools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp os-prober p7zip perl-data-dump openssh sis-dri transmission-gtk ttf-dejavu ttf-droid wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools$TouchpadDriver
 echo -e \"\n Dodajem OpenSSH u systemd...\"
 systemctl enable sshd
 echo -e \"\n Postavljam tipkovnicu na $Layout layout...\"
@@ -389,7 +389,7 @@ case \"$DEzaInst\" in
 ;;
 4*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
- pacman -Sy --noconfirm deadbeef file-roller gnome-mplayer gnome-themes-standard lxde lxdm leafpad zenity
+ pacman -Sy --noconfirm deadbeef file-roller gnome-mplayer gnome-themes-standard lxde lxdm leafpad obconf zenity
  systemctl enable lxdm.service
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
