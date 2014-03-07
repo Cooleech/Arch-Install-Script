@@ -304,7 +304,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 #################################
 # What	 : ArchChroot		#
-# Which  : version 6.5-32	#
+# Which  : version 6.5-33	#
 # Who	 : Cooleech		#
 # Under	 : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -347,11 +347,7 @@ echo -e \"\n Podešavam vrijeme...\"
 ntpd -qg
 hwclock -w
 case \"$DEzaInst\" in
-2*)
- echo -e \"\n Omogućujem korištenje mate-keyringa...\"
- echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/mate-keyring --start --components=gpg,pkcs11,secrets,ssh)\nexport MATE_KEYRING_CONTROL MATE_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
-;;
-*)
+1*|2*|3*|4*)
  echo -e \"\n Instalacija gnome-keyringa...\"
  pacman -Sy --noconfirm gnome-keyring
  echo -e \"\n Omogućujem korištenje gnome-keyringa...\"
