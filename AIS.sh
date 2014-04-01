@@ -1,21 +1,202 @@
 #!/bin/sh
 #################################
 # What	 : Arch-Install-Script	#
-# Which	 : version 6.5-32	#
+# Which	 : version 6.6		#
 # Who	 : Cooleech		#
 # Under  : GPLv2		#
 # E-mail : cooleechATgmail.com	#
-#################################
+#################################ž
 #==============================================================================#
+clear
+echo -e "\n \e[1;34mOdaberite jezik instalera\e[0m | \e[1;34mPick installer's language\e[0m:\n\n \e[36mh\e[0m = \e[36mHrvatski\e[0m\t<= default\n\n \e[36me\e[0m = \e[36mEnglish\e[0m\n"
+read Language
+Language="${Language,,}"
+case "$Language" in
+e*)
+EnterYourUsername="Enter your ( \e[36muser\e[0m ) name"
+Warning="WARNING"
+NoUsername="You didn't provide any username..."
+EnterUserPass="Enter password for user"
+NoDisplaying="( will not display entered )"
+ReenterUserPass="Reenter password for user"
+EnterRootPass="Enter password for \e[1;31mroot\e[0m"
+ReenterRootPass="Reenter password for \e[1;31mroot\e[0m"
+DisplayDisks="Available disks"
+EnterDiskToPart="Enter which disk you wish to partition"
+Without="WITHOUT"
+And="i"
+Eg="eg"
+Numbers="numbers"
+Error="ERROR"
+YouPicked="You picked"
+DiskAccessError="which cfdisk cannot access.\n Choose a disk again"
+ViewPartitions="View of disk partitions"
+EnterPartitionNumber="Enter \e[1;36mNUMBER\e[0m of disk partition for"
+PartitionError="partition *MUST* be selected"
+CheckInternet="Checking internet connection"
+ConnectUsingWiFi="Would you like to use wifi connection"
+Yn="Y/n"
+NoInternet="There's no internet connection! \e[1;31m:(\e[0m Please, check the cable or your net device settings!
+ This installation \e[1;37mNEEDS\e[0m internet conection to finish successfuly!"
+ContinueOrCancel="Press \e[1;32mEnter\e[0m to continue or \e[1;31mCtrl\e[0m + \e[1;31mC\e[0m to cancel instalation"
+PassEmpty="Password cannot be blank"
+PassMismatch="Passwords do not match"
+Welcome="Welcome to simplified installation of \e[1;36mArch Linux\e[0m"
+WhyThisScript="This script is here to simplify Arch Linux install process"
+YourRisk="YOU ARE USING IT AT YOUR OWN RISK"
+InfoGathering="First, we'll pick some information. So, let's go"
+WhichKeyLayout="Which keyboard layout would you like to use"
+Croatian="Croatian"
+English="English"
+Other="Other"
+SetCroatian="Now you are using croatian"
+SetAmerican="Now you are using american"
+KeyboardLayout="keyboard layout"
+EnterKeyboardLayout="Enter keyboard layout you wish to use after installation"
+GermanEg="for german layout"
+LayoutAfterInstall="After installation, keyboard layout will be set to"
+ToSkip="to skip, just press \e[1;32mEnter\e[0m"
+ToFormat="Would you like to \e[1;31mformat"
+Partition="partition"
+HomeToExt="yes, into ext4\n\t\t( * WARNING * All data from"
+WillBeErased="partition will be erased"
+NoSepHomePart="no separate /home partition"
+Yes="yes"
+No="no"
+NoSwapPart="swap partition not selected"
+EnterHostName="Enter hostname ( no spaces, just \e[1;32mEnter\e[0m for"
+EnterDEnum="Enter number beside the DE you wish to install"
+IllPickLater="I'll install DE or WM later"
+AutoLoginAs="Would you like to use autologin for"
+AtLogin="at login"
+NumLockOn="Would you like to have Num Lock turned on $AtLogin"
+WillBeOn="will be turned on"
+WillBeOff="will be turned off"
+NoDEorWMinstall="There won't be any DE or WM installation, so after base install\n you can do it by canceling reboot and reentering chroot enviroment manualy"
+DEinstNotSel="no DE installaton selected"
+ThisIsMobilePC="This PC is mobile (laptop or netbook)"
+yN="y/N"
+Overview="Important settings overview"
+UserName="User name:\t"
+HostName="Host name"
+DiskPart="Disk partitions"
+FormPart="Formating partitions"
+YesTo="yes, to"
+YesIfSel="yes ( if selected"
+KeyLayout="Keyboard"
+AllInfoIneed="That's it. I've got enough to proceed with the installation.\n Just sit back and relax until installation finishes"
+AddFastMir="Adding 5 fastest mirrors. This will take a while.\n\n  In the meantime, you could visit this nice web-page (in croatian)"
+InstallEnd="INSTALLATION ENDED"
+EnjoyWith="Enjoy with your new"
+EnterTo="Enter to"
+;;
+*)
+EnterYourUsername="Upišite svoje ( \e[36mkorisničko\e[0m ) ime"
+Warning="UPOZORENJE"
+NoUsername="Niste upisali korisničko ime..."
+EnterUserPass="Upišite lozinku za korisnika"
+NoDisplaying="( neće prikazati unos )"
+ReenterUserPass="Ponovo upišite lozinku za korisnika"
+EnterRootPass="Upišite lozinku za \e[1;31mroot\e[0m korisnika"
+ReenterRootPass="Ponovo upišite lozinku za \e[1;31mroot\e[0m korisnika"
+DisplayDisks="Dostupni diskovi"
+EnterDiskToPart="Upišite koji disk želite patricionirati"
+Without="BEZ"
+And="i"
+Eg="npr"
+Numbers="brojki"
+Error="GREŠKA"
+YouPicked="Odabrali ste"
+DiskAccessError="kojemu cfdisk ne može pristupiti.\n Ponovite odabir diska"
+ViewPartitions="Pregled stanja particija na disku"
+EnterPartitionNumber="Upišite \e[1;36mBROJ\e[0m particije diska za"
+PartitionError="particija *MORA* biti odabrana"
+CheckInternet="Provjeravam konekciju na internet"
+ConnectUsingWiFi="Želite se spojiti bežično"
+Yn="D/n"
+NoInternet="Nema dostupne internet veze! \e[1;31m:(\e[0m Provjerite kabel ili postavke mrežnog uređaja!
+ Da bi se uspješno obavila, ova instalacija \e[1;37mTREBA\e[0m vezu s internetom"
+ContinueOrCancel="Pritisnite \e[1;32mEnter\e[0m za nastavak ili \e[1;31mCtrl\e[0m + \e[1;31mC\e[0m za prekid instalacije"
+PassEmpty="Lozinka ne može biti prazna"
+PassMismatch="Lozinke se ne podudaraju"
+Welcome="Dobrodošli u pojednostavljenu instalaciju \e[1;36mArch Linuxa\e[0m"
+WhyThisScript="Ova skripta je tu da vam maksimalno olakša Arch Linux instalaciju"
+YourRisk="KORISTITE JE NA VLASTITU ODGOVORNOST"
+InfoGathering="Za početak, prikupit ćemo neke informacije. Pa, krenimo"
+WhichKeyLayout="Koji raspored tipkovnice ( keyboard layout ) želite koristiti"
+Croatian="Hrvatski"
+English="Američki"
+Other="Ostali"
+SetCroatian="Postavljen je hrvatski"
+SetAmerican="Postavljen je američki"
+KeyboardLayout="raspored tipkovnice"
+EnterKeyboardLayout="Upišite raspored tipkovnice koji želite koristiti nakon instalacije"
+GermanEg="za njemački raspored"
+LayoutAfterInstall="Raspored tipkovnice nakon instalacije bit će postavljen na"
+ToSkip="za preskok samo pritisnite \e[1;32mEnter\e[0m"
+ToFormat="Želite li \e[1;31mformatirati"
+Partition="particiju"
+HomeToExt="da, u ext4\n\t\t( * OPREZ * Svi podaci s"
+WillBeErased="particije bit će izbrisani"
+NoSepHomePart="nema zasebne /home particije"
+Yes="da"
+No="ne"
+NoSwapPart="niste odabrali swap particiju"
+EnterHostName="Upišite ime hosta ( bez razmaka, samo \e[1;32mEnter\e[0m za"
+EnterDEnum="Upišite broj pored DE-a koji želite instalalirati"
+IllPickLater="kasnije ću instalirati DE ili WM"
+AutoLoginAs="Želite li biti automatski ulogirani kao"
+AtLogin="pri logiranju"
+NumLockOn="Želite li imati uključen Num Lock $AtLogin u sustav"
+WillBeOn="bit će uključen"
+WillBeOff="neće biti uključen"
+NoDEorWMinstall="Neće biti instaliran nikakav DE ili WM, no nakon instalacije\n možete otkazati reboot i instalirati što želite ponovnim ulaskom u chroot okruženje"
+DEinstNotSel="niste odabrali instalaciju DE-a"
+ThisIsMobilePC="Ovo računalo je prijenosno"
+yN="d/N"
+Overview="Pregled važnijih postavki"
+UserName="Korisničko ime:"
+HostName="Ime hosta"
+DiskPart="Particije diska"
+FormPart="Formatiranje particija"
+YesTo="da, u"
+YesIfSel="da ( ako je odabran"
+KeyLayout="Tipkovnica"
+AllInfoIneed="To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\n Samo sjednite i opustite se dok se instalacija ne obavi do kraja"
+AddFastMir="Dodavanje 5 najbržih mirrora. Ovo će malo potrajati.\n\n  U međuvremenu, možete posjetiti stranicu udruge"
+InstallEnd="KRAJ INSTALACIJE"
+EnjoyWith="Sretno uz novoinstalirani"
+EnterTo="Enter za"
+;;
+esac
+X11Layouts="af al am ara at az ba bd be bg br brai bt bw by ca cd ch cm cn cz de dk ee epo es et fi fo fr gb ge gh gn gr hr hu ie il in iq ir is it jp ke kg kh kr kz la latam lk lt lv ma mao md me mk ml mm mn mt mv nec_vndr/jp ng nl no np ph pk pl pt ro rs ru se si sk sn sy th tj tm tr tw tz ua us uz vn za"
+#==============================================================================#
+function ENTER_KEYBOARD_LAYOUT {
+clear
+echo -e "\n $EnterKeyboardLayout\n\t( $Eg.\e[1;36m DE\e[0m $GermanEg )\n"
+read Layout
+Layout="${Layout,,}"
+case "$X11Layouts" in
+*$Layout*)
+ echo -e "\n $LayoutAfterInstall \e[1;36m${Layout^^}\e[0m" && CONTINUE_OR_CANCEL
+;;
+*)
+ echo -e "\n \e[31m*** ERROR / GREŠKA ***\e[0m\n\n Bad layout! / Krivi raspored tipki!\n"
+ sleep 2
+ ENTER_KEYBOARD_LAYOUT
+;;
+esac
+}
+
 function USER_NAME {
 clear
-echo -e "\n Upišite svoje ( \e[36mkorisničko\e[0m ) ime:\n"
+echo -e "\n $EnterYourUsername:\n"
 read Korisnik
 Korisnik="${Korisnik%% *}" # Ostavi samo prvu riječ
 Korisnik="${Korisnik,,}" # Konverzija u lowercase
 clear
 if [ "$Korisnik" = "" ]; then
- echo -e "\n \e[1;36m* UPOZORENJE *\e[0m\n Niste upisali korisničko ime...\n"
+ echo -e "\n \e[1;36m* $Warning *\e[0m\n $NoUsername...\n"
  CONTINUE_OR_CANCEL
  USER_NAME
 fi
@@ -25,7 +206,7 @@ function ENTER_USER_PASS {
 clear
 Lozinka1=""
 Lozinka2=""
-echo -e "\n Upišite lozinku za korisnika \e[1;36m$Korisnik\e[0m ( neće prikazati unos ):"
+echo -e "\n $EnterUserPass \e[1;36m$Korisnik\e[0m $NoDisplaying:"
 stty -echo
 read Lozinka1
 stty echo
@@ -33,7 +214,7 @@ if [ "$Lozinka1" = "" ]; then
  PASSWORD_EMPTY
  ENTER_USER_PASS
 fi
-echo -e "\n Ponovo upišite lozinku za korisnika \e[1;36m$Korisnik\e[0m ( neće prikazati unos ):"
+echo -e "\n $ReenterUserPass \e[1;36m$Korisnik\e[0m $NoDisplaying:"
 stty -echo
 read Lozinka2
 stty echo
@@ -50,7 +231,7 @@ function ENTER_ROOT_PASS {
 clear
 Lozinka3=""
 Lozinka4=""
-echo -e "\n Upišite lozinku za \e[1;31mroot\e[0m korisnika ( neće prikazati unos ):"
+echo -e "\n $EnterRootPass $NoDisplaying:"
 stty -echo
 read Lozinka3
 stty echo
@@ -58,7 +239,7 @@ if [ "$Lozinka3" = "" ]; then
  PASSWORD_EMPTY
  ENTER_ROOT_PASS
 fi
-echo -e "\n Ponovo upišite lozinku za \e[1;31mroot\e[0m korisnika ( neće prikazati unos ):"
+echo -e "\n $ReenterRootPass $NoDisplaying:"
 stty -echo
 read Lozinka4
 stty echo
@@ -73,16 +254,16 @@ fi
 
 function PARTITIONING {
 clear
-echo -e "\n Prikaz dostupnih diskova:"
+echo -e "\n $DisplayDisks:"
 fdisk -l
-echo -e "\n Upišite koji disk želite patricionirati ( BEZ \e[35m/dev/\e[0m i BEZ \e[35mbrojke\e[0m, npr. \e[36msda\e[0m ):\n"
+echo -e "\n $EnterDiskToPart ( $Without \e[35m/dev/\e[0m $And $Without \e[35m$Numbers\e[0m, $Eg. \e[36msda\e[0m ):\n"
 read Disk
 Disk="${Disk,,}"
 Disk="${Disk//'/dev/'/}" # Ukloni /dev/ (za svaki slučaj :))
 cfdisk /dev/$Disk
 if [ $? != 0 ]; then
  clear
- echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Odabrali ste \"$Disk\" disk kojemu cfdisk ne može pristupiti.\n Ponovite odabir diska!\n"
+ echo -e "\n \e[1;31m* $Error *\e[0m\n\n $YouPicked \"$Disk\" disk $DiskAccessError!\n"
  CONTINUE_OR_CANCEL
  PARTITIONING
 fi
@@ -90,14 +271,14 @@ fi
 
 function SEL_ROOT_PARTITION {
 clear
-echo -e "\n Pregled stanja particija na disku \e[1;33m/dev/$Disk\e[0m\n"
+echo -e "\n $ViewPartitions \e[1;33m/dev/$Disk\e[0m\n"
 lsblk /dev/$Disk
-echo -e "\n Upišite \e[1;36mBROJ\e[0m particije diska za / ( root )\n\t( bez \e[1;33m/dev/$Disk\e[0m, npr. \e[36m 1 \e[0m):"
+echo -e "\n $EnterPartitionNumber / ( root )\n\t( $Without \e[1;33m/dev/$Disk\e[0m, $Eg. \e[36m 1 \e[0m):"
 read RootPart
 RootPart="${RootPart//'/dev/$Disk'/}" # Za svaki slučaj... :)
 if [ "$RootPart" = "" ]; then
  clear
- echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Root particija *MORA* biti odabrana!\n"
+ echo -e "\n \e[1;31m* $Error *\e[0m\n\n Root $PartitionError!\n"
  CONTINUE_OR_CANCEL
  SEL_ROOT_PARTITION
 fi
@@ -106,120 +287,113 @@ fi
 function NET_DEVICE {
 ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
 clear
-echo -e "\n Provjeravam konekciju na internet...\n"
+echo -e "\n $CheckInternet...\n"
 ping -c2 google.com
 if [ $? != 0 ]; then
- echo -e "\n Želite se spojiti bežično? (D/n)"
+ echo -e "\n $ConnectUsingWiFi? ( $Yn )"
  read Spajanje
  Spajanje="${Spajanje,,}"
  case "$Spajanje" in
- d*)
+ d*|y*)
   wifi-menu -o
  ;;
  esac
  sleep 2 && ping -c2 google.com
  if [ $? != 0 ]; then
-  echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Nema dostupne internet veze! \e[1;31m:(\e[0m Provjerite kabel ili postavke mrežnog uređaja!
- Da bi se uspješno obavila, ova instalacija \e[1;37mTREBA\e[0m vezu s internetom.\n"
+  echo -e "\n \e[1;31m* $Error *\e[0m\n\n $NoInternet.\n"
   CONTINUE_OR_CANCEL
   NET_DEVICE
  fi
 fi
-echo -e "\n \e[1;32mSpojeni ste na internet. \e[33m:)\e[0m\n" && sleep 1
 }
 
 function CONTINUE_OR_CANCEL {
-echo -e " Pritisnite \e[1;32mEnter\e[0m za nastavak ili \e[1;31mCtrl\e[0m + \e[1;31mC\e[0m za prekid instalacije..."
+echo -e " $ContinueOrCancel..."
 read -p ""
 }
 
 function PASSWORD_EMPTY {
 clear
-echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Lozinka ne može biti prazna!\n"
+echo -e "\n \e[1;31m* $Error *\e[0m\n\n $PassEmpty!\n"
 CONTINUE_OR_CANCEL
 }
 
 function PASSWORD_MISMATCH {
 clear
-echo -e "\n \e[1;31m* GREŠKA *\e[0m\n\n Lozinke se ne podudaraju!\n"        
+echo -e "\n \e[1;31m* $Error *\e[0m\n\n $PassMismatch!\n"        
 CONTINUE_OR_CANCEL
 }
 #==============================================================================#
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
 setfont Lat2-Terminus16 # Postavljam font (podržava sva naša slova)
 clear
-echo -e "\n \e[36m********************************************************************************
- *\tDobrodošli u pojednostavljenu instalaciju \e[1;36mArch Linuxa\e[0m \e[36mby \e[1;36mCooleech\e[0m\t\e[36m*
- ********************************************************************************\e[0m
-\n\tOva skripta je tu da vam maksimalno olakša Arch Linux instalaciju!\n
-\t\e[31m* * * NAPOMENA: KORISTITE JE NA VLASTITU ODGOVORNOST * * *\n\e[0m
-\tZa početak, prikupit ćemo neke informacije. Pa, krenimo! \e[1;33m:)\e[0m\n\n
- Koji raspored tipkovnice ( keyboard layout ) želite koristiti?\n\n \e[36m0\e[0m = \e[36mhrvatski\e[0m ( HR ) <= default\n\n \e[36m1\e[0m = \e[36mamerički\e[0m ( US )\n"
+echo -e "\n\e[36m *******************************************************************************\n\t$Welcome \e[36mby \e[1;36mCooleech\e[0m\t\e[36m\n *******************************************************************************\e[0m
+\n\t$WhyThisScript!\n
+\t\e[31m* * * $Warning: $YourRisk * * *\n\e[0m
+\t$InfoGathering! \e[1;33m:)\e[0m\n\n
+ $WhichKeyLayout?\n\n \e[36mh\e[0m = \e[36m$Croatian\e[0m\t( HR ) <= default\n\n \e[36me\e[0m = \e[36m$English\e[0m\t( US )\n\n \e[36mo\e[0m = \e[36m$Other\e[0m\t( ?? )\n"
 read PostavTipki
 case "$PostavTipki" in
-0*|"")
+h*|"")
  loadkeys croat # Postavi tipkovnicu na hrvatski layout
  Layout="hr"
- echo -e "\n \e[1;36mINFO:\e[0m Postavljen je hrvatski (\e[1;36m HR \e[0m) raspored tipkovnice!\n" && CONTINUE_OR_CANCEL
+ echo -e "\n \e[1;36mINFO:\e[0m $SetCroatian (\e[1;36m HR \e[0m) $KeyboardLayout!\n" && CONTINUE_OR_CANCEL
 ;;
-1*)
+e*)
  loadkeys us # Postavi tipkovnicu na američki layout
  Layout="us"
- echo -e "\n \e[1;36mINFO:\e[0m Postavljen je američki (\e[1;36m US \e[0m) raspored tipkovnice!\n" && CONTINUE_OR_CANCEL
+ echo -e "\n \e[1;36mINFO:\e[0m $SetAmerican (\e[1;36m US \e[0m) $KeyboardLayout!\n" && CONTINUE_OR_CANCEL
 ;;
 *)
  loadkeys us # Postavi tipkovnicu na američki layout
  Layout="?"
- echo -e "\n \e[1;36mINFO:\e[0m Pretpostavljam da ste htjeli američku, stoga\n\tpostavljena vam je američka (\e[1;36m US \e[0m) tipkovnica.\n" && CONTINUE_OR_CANCEL
+ echo -e "\n \e[1;36mINFO:\e[0m $SetAmerican (\e[1;36m US \e[0m) $KeyboardLayout.\n" && CONTINUE_OR_CANCEL
 ;;
 esac
 clear
 if [ "$Layout" = "?" ]; then
- echo -e "\n Upišite raspored tipkovnice koji želite koristiti nakon instalacije\n\t( npr.\e[1;36m DE\e[0m za njemački raspored, ali\e[1;31m pripazite što upisujete\e[0m )\n"
- read Layout
- Layout="${Layout,,}"
- echo -e "\n Raspored tipkovnice nakon instalacije bit će postavljen na \e[1;36m${Layout^^}\e[0m" && CONTINUE_OR_CANCEL
+ ENTER_KEYBOARD_LAYOUT
 fi
 USER_NAME
 ENTER_USER_PASS
 ENTER_ROOT_PASS
 PARTITIONING
 SEL_ROOT_PARTITION
-echo -e "\n Upišite \e[1;36mBROJ\e[0m particije diska za /home\n\t( bez \e[1;33m/dev/$Disk\e[0m, za preskok samo Enter ):"
+echo -e "\n $EnterPartitionNumber /home\n\t( $Without \e[1;33m/dev/$Disk\e[0m, $ToSkip ):"
 read HomePart
 HomePart="${HomePart//'/dev/$Disk'/}" # Za svaki slučaj... :)
 if [ "$HomePart" != "" ]; then
- echo -e "\n\tŽelite li \e[1;31mformatirati\e[0m /home ( /dev/\e[1;36m$Disk$HomePart\e[0m ) particiju? ( D/n )"
+ echo -e "\n\t$ToFormat\e[0m /home ( /dev/\e[1;36m$Disk$HomePart\e[0m ) $Partition? ( $Yn )"
  read Formatiraj
  Formatiraj="${Formatiraj,,}"
 fi
 case "$Formatiraj" in # Potrebno za info prije početka instalacije
-d*|"")
+d*|y*|"")
  if [ "$HomePart" != "" ]; then
-  Formatirati="da, u ext4\n\t\t( * OPREZ * Svi podaci s /dev/$Disk$HomePart particije bit će izbrisani! )"
+  Formatirati="$HomeToExt /dev/$Disk$HomePart $WillBeErased! )"
  else
-  Formatirati="\e[32mnema zasebne /home particije\e[0m"
+  Formatirati="\e[32m$NoSepHomePart\e[0m"
  fi
 ;;
 *)
- Formatirati="ne"
+ Formatirati="$No"
 ;;
 esac
-echo -e "\n Upišite \e[1;36mBROJ\e[0m particije diska za swap\n\t( bez \e[1;33m/dev/$Disk\e[0m, za preskok samo Enter ):"
+echo -e "\n $EnterPartitionNumber swap\n\t( $Without \e[1;33m/dev/$Disk\e[0m, $ToSkip ):"
 read SwapPart
 SwapPart="${SwapPart//'/dev/$Disk'/}" # Za svaki slučaj... :)
 if [ "$HomePart" = "" ]; then
- Home=" Home: /dev/$Disk$RootPart ( /home niste odvojili na zasebnu particiju )"
+ Home=" Home: /dev/$Disk$RootPart ( $NoSepHomePart )"
 else
  Home=" Home: /dev/$Disk$HomePart"
 fi
 if [ "$SwapPart" = "" ]; then
- Swap=" Swap: ništa ( niste odabrali swap particiju )"
+ Swap=" Swap: ništa ( $NoSwapPart )"
 else
  Swap=" Swap: /dev/$Disk$SwapPart"
 fi
 clear
-echo -e "\n Upišite ime hosta ( bez razmaka, samo Enter za \e[36marchlinux\e[0m ):\n"
+echo -e "\n $EnterHostName \e[36marchlinux\e[0m ):\n"
 read ImeHosta
 ImeHosta="${ImeHosta// /}" # Ukloni razmake
 ImeHosta="${ImeHosta//'@'/AT}" # Zamjeni znak @
@@ -229,46 +403,46 @@ if [ "$ImeHosta" = "" ]; then
 fi
 NET_DEVICE
 clear
-echo -e "\n Upišite broj pored DE-a koji želite instalalirati:\n\n \e[36m0\e[0m = \e[36msami ćete kasnije instalirati neki DE ili WM\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE\n
+echo -e "\n $EnterDEnum:\n\n \e[36m0\e[0m = \e[36m$IllPickLater\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE\n
  2\e[0m = \e[36mMATE\n\n 3\e[0m = \e[36mXfce\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
 case "$DEzaInst" in
 1*|2*|3*|4*)
- echo -e "\n Želite li pri podizanju sustava automatski biti ulogirani kao \e[1;36m$Korisnik\e[0m? ( D/n )\n"
+ echo -e "\n $AutoLoginAs \e[1;36m$Korisnik\e[0m? ( $Yn )\n"
  read AutoLogin
  AutoLogin="${AutoLogin,,}"
- echo -e "\n Želite li imati uključen Num Lock pri logiranju u sustav? (D/n))\n"
+ echo -e "\n $NumLockOn? ( $Yn )\n"
  read NumLock
  NumLock="${NumLock,,}"
  case "$NumLock" in
- d*|"")
-  NumLock="da ( bit će uključen pri logiranju )"
+ d*|y*|"")
+  NumLock="$Yes ( $WillBeOn $AtLogin )"
  ;;
  *)
-  NumLock="ne ( neće biti uključen pri logiranju )"
+  NumLock="$No ( $WillBeOff $AtLogin )"
  ;;
  esac
 ;;
 *)
- echo -e "\n \e[1;36mINFO:\e[31m Neće biti instaliran nikakav DE (ili WM),\n pa nakon instalacije možete sami instalirati što želite. ;)\e[0m\n"
- NumLock="ne"
+ echo -e "\n \e[1;36mINFO:\e[31m $NoDEorWMinstall. ;)\e[0m\n"
+ NumLock="$No ( $DEinstNotSel )" 
  CONTINUE_OR_CANCEL
 ;;
 esac
 clear
-echo -e "\n Ovo računalo je prijenosno? ( d/N )\n"
+echo -e "\n $ThisIsMobilePC? ( $yN )\n"
 read Prijenosnik
 Prijenosnik="${Prijenosnik,,}"
 case "$Prijenosnik" in
-d*)
+d*|y*)
  TouchpadDriver=" xf86-input-synaptics libsynaptics"
 ;;
 esac
 clear
-echo -e "\n Pregled važnijih postavki:\n\n Korisničko ime: \e[36m$Korisnik\e[0m\n Ime hosta:\t \e[36m$ImeHosta\e[0m\n\n Particije diska:\n
-  \e[36mRoot: /dev/$Disk$RootPart\n $Home\n $Swap\e[0m\n\n Formatiranje particija:\n
-  /\t\t\e[36mda, u ext4\e[0m\n  /home\t\t\e[1;31m$Formatirati\e[0m\n  swap\t\t\e[36mda ( ako je odabran )\e[0m\n
- Tipkovnica:\t\e[1;36m${Layout^^}\e[0m\n Num Lock:\t\e[36m$NumLock\e[0m\n\n To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\n Samo sjednite i opustite se dok se instalacija ne obavi do kraja. ;)\n"
+echo -e "\n $Overview:\n\n $UserName \e[36m$Korisnik\e[0m\n $HostName:\t \e[36m$ImeHosta\e[0m\n\n $DiskPart:\n
+  \e[36mRoot: /dev/$Disk$RootPart\n $Home\n $Swap\e[0m\n\n $FormPart:\n
+  /\t\t\e[36m$YesTo ext4\e[0m\n  /home\t\t\e[1;31m$Formatirati\e[0m\n  swap\t\t\e[36m$YesIfSel )\e[0m\n
+ $KeyLayout:\t\e[1;36m${Layout^^}\e[0m\n Num Lock:\t\e[1;32m$NumLock\e[0m\n\n $AllInfoIneed. ;)\n"
 CONTINUE_OR_CANCEL
 clear
 echo -e "\n Formatiranje particija...\n"
@@ -277,7 +451,7 @@ if [ "$HomePart" != "" ]; then
  echo -e "\n Stvaram mapu /mnt/home..."
  mkdir /mnt/home
  case "$Formatiraj" in
- d*|"")
+ d*|y*|"")
   echo -e "\n Formatiram /dev/$Disk$HomePart..."
   umount /dev/$Disk$HomePart # Ako je montirana, odmontiraj
   mkfs.ext4 /dev/$Disk$HomePart
@@ -290,7 +464,7 @@ fi
 clear
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup # Bekapiranje mirrorliste
 sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiraj sve mirrore za test brzine
-echo -e "\n Dodavanje 5 najbržih mirrora. Ovo će malo potrajati.\n\n  U međuvremenu, možete posjetiti stranicu udruge \e[32mSO\e[35mK\e[0m:\n\n\t\e[1;34mhttp://sok.hr\e[0m\n"
+echo -e "\n $AddFastMir \e[32mSO\e[35mK\e[0m:\n\n\t\e[1;34mhttp://sok.hr\e[0m\n"
 rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 clear
 echo -e "\n Osvježavanje liste...\n"
@@ -373,7 +547,7 @@ case \"$DEzaInst\" in
 ;;
 2*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
- pacman -Sy --noconfirm deadbeef mate-mplayer gtk-engine-murrine mate mate-extra xdg-user-dirs-gtk slim zenity
+ pacman -Sy --noconfirm deadbeef mate-mplayer gtk-engine-murrine mate mate-extra slim zenity
  systemctl enable slim.service
  echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
@@ -470,6 +644,6 @@ clear
 echo -e "\n Odmontiravanje montiranih particija..."
 umount -R /mnt
 swapoff -a
-echo -e "\n\e[36m*********************************\n*\t\e[37mKRAJ INSTALACIJE\e[36m\t*\n*********************************\e[0m\n\n Sretno uz novoinstalirani \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
-read -p " Enter za reboot..."
+echo -e "\n\e[36m*********************************\n*\t\e[37m$InstallEnd\e[36m\t*\n*********************************\e[0m\n\n $EnjoyWith \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
+read -p " $EnterTo reboot..."
 reboot
