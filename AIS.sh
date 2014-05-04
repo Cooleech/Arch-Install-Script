@@ -522,8 +522,8 @@ ntpd -qg
 hwclock -w
 case \"$DEzaInst\" in
 1*|2*|3*|4*)
- echo -e \"\n Instalacija gnome-keyringa...\"
- pacman -Sy --noconfirm gnome-keyring
+ echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
+ pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
  echo -e \"\n Omogućujem korištenje gnome-keyringa...\"
  echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)\nexport GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
 ;;
@@ -559,7 +559,7 @@ case \"$DEzaInst\" in
 ;;
 4*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
- pacman -Sy --noconfirm deadbeef file-roller gnome-mplayer gnome-themes-standard lxde lxdm leafpad obconf zenity
+ pacman -Sy --noconfirm deadbeef file-roller gnome-mplayer lxde lxdm leafpad obconf zenity
  systemctl enable lxdm.service
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
