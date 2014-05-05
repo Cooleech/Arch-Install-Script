@@ -559,7 +559,7 @@ case \"$DEzaInst\" in
 ;;
 4*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
- pacman -Sy --noconfirm deadbeef file-roller gnome-mplayer lxde lxdm leafpad obconf zenity
+ pacman -Sy --noconfirm file-roller gnome-mplayer lxde lxdm leafpad obconf zenity
  systemctl enable lxdm.service
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
