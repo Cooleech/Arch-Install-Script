@@ -478,7 +478,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 #################################
 # What	 : ArchChroot		#
-# Which  : version 6.5-34	#
+# Which  : version 6.6		#
 # Who	 : Cooleech		#
 # Under	 : GPLv2		#
 # E-mail : cooleechATgmail.com	#
