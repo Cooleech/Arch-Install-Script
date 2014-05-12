@@ -5,7 +5,7 @@
 # Who	 : Cooleech		#
 # Under  : GPLv2		#
 # E-mail : cooleechATgmail.com	#
-#################################ž
+#################################
 #==============================================================================#
 clear
 echo -e "\n \e[1;34mOdaberite jezik instalera\e[0m | \e[1;34mPick installer's language\e[0m:\n\n \e[36mh\e[0m = \e[36mHrvatski\e[0m\t<= default\n\n \e[36me\e[0m = \e[36mEnglish\e[0m\n"
