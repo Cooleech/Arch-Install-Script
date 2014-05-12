@@ -540,7 +540,7 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and s
 case \"$DEzaInst\" in
 1*)
  echo -e \"\n Pokrećem minimalnu instalaciju KDE-a...\"
- pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm oxygen-gtk2 oxygen-gtk3 phonon-gstreamer qmmp vlc
+ pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm oxygen-gtk2 oxygen-gtk3 vlc
  systemctl enable kdm.service
  echo \"auth            optional        pam_gnome_keyring.so\" >> /etc/pam.d/kscreensaver
  echo -e \"exec startkde\" >> /home/$Korisnik/.xinitrc
