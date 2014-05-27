@@ -399,7 +399,6 @@ ImeHosta="${ImeHosta// /}" # Ukloni razmake
 ImeHosta="${ImeHosta//'@'/AT}" # Zamjeni znak @
 if [ "$ImeHosta" = "" ]; then
  ImeHosta="archlinux"
- echo "$ImeHosta"
 fi
 NET_DEVICE
 clear
