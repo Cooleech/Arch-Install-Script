@@ -546,7 +546,7 @@ case \"$DEzaInst\" in
 ;;
 2*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
- pacman -Sy --noconfirm deadbeef mate-mplayer gtk-engine-murrine mate mate-extra slim zenity
+ pacman -Sy --noconfirm deadbeef gtk-engine-murrine mate mate-extra mate-mplayer mplayer slim zenity
  systemctl enable slim.service
  echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
