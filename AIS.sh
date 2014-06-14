@@ -477,7 +477,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 #################################
 # What	 : ArchChroot		#
-# Which  : version 6.62		#
+# Which  : version 6.63		#
 # Who	 : Cooleech		#
 # Under	 : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -505,7 +505,7 @@ echo -e \"\n Postavljam hwclock na UTC...\"
 hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
-pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp os-prober p7zip perl-data-dump openssh sis-dri transmission-gtk ttf-dejavu ttf-droid wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools$TouchpadDriver
+pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp os-prober p7zip perl-data-dump openssh sis-dri transmission-gtk ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools zip$TouchpadDriver
 echo -e \"\n Dodajem OpenSSH u systemd...\"
 systemctl enable sshd
 echo -e \"\n Postavljam tipkovnicu na $Layout layout...\"
@@ -538,7 +538,7 @@ echo -e \"polkit.addRule(function(action, subject) {\n\tif (action.id.indexOf(\\
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and sudo for all
 case \"$DEzaInst\" in
 1*)
- echo -e \"\n Pokrećem minimalnu instalaciju KDE-a...\"
+ echo -e \"\n Pokrećem instalaciju KDE-a...\"
  pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm kdeutils-ark oxygen-gtk2 oxygen-gtk3 vlc
  systemctl enable kdm.service
  echo \"auth            optional        pam_gnome_keyring.so\" >> /etc/pam.d/kscreensaver
@@ -552,14 +552,16 @@ case \"$DEzaInst\" in
 ;;
 3*)
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
- pacman -Sy --noconfirm deadbeef file-roller parole slim thunar-archive-plugin thunar-volman xfce4 xfce4-goodies xfce4-notifyd zenity
+ pacman -Sy --noconfirm deadbeef parole slim thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd zenity
  systemctl enable slim.service
  echo -e \"exec startxfce4\" >> /home/$Korisnik/.xinitrc
 ;;
 4*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
- pacman -Sy --noconfirm file-roller gnome-mplayer lxde lxdm leafpad obconf zenity
+ pacman -Sy --noconfirm gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
  systemctl enable lxdm.service
+ sed -i 's/terminal=/terminal=lxterminal/g' /home/$Korisnik/.config/libfm/libfm.conf
+ sed -i 's/archiver=/archiver=xarchiver/g' /home/$Korisnik/.config/libfm/libfm.conf
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
 *)
