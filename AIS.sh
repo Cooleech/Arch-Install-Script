@@ -560,8 +560,8 @@ case \"$DEzaInst\" in
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
  pacman -Sy --noconfirm gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
  systemctl enable lxdm.service
- sed -i 's/terminal=/terminal=lxterminal/g' /home/$Korisnik/.config/libfm/libfm.conf
- sed -i 's/archiver=/archiver=xarchiver/g' /home/$Korisnik/.config/libfm/libfm.conf
+ #sed -i 's/terminal=/terminal=lxterminal/g' /home/$Korisnik/.config/libfm/libfm.conf
+ #sed -i 's/archiver=/archiver=xarchiver/g' /home/$Korisnik/.config/libfm/libfm.conf
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
 *)
