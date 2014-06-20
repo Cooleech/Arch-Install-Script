@@ -524,7 +524,7 @@ case \"$DEzaInst\" in
  echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
  pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
  echo -e \"\n Omogućujem korištenje gnome-keyringa...\"
- echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)\nexport GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
+ echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)\nexport GPG_AGENT_INFO SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
 ;;
 esac
 echo -e \"\n Konfiguriram Network Manager...\"
@@ -558,7 +558,7 @@ case \"$DEzaInst\" in
 ;;
 4*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
- pacman -Sy --noconfirm gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
+ pacman -Sy --noconfirm galculator gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
  systemctl enable lxdm.service
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
