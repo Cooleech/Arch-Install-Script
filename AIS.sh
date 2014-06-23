@@ -471,7 +471,7 @@ pacman -Syy
 echo -e "\n Instalacija osnovnog sustava...\n"
 pacstrap /mnt base base-devel
 if [ $? != 0 ]; then
- echo -e "\n \e[1;31m* $Error *\e[0m\n\n Pritisnite \e[1;32mEnter\e[0m za nastavak...\n\nPress \e[1;32mEnter\e[0m to continue...\n\n"
+ echo -e "\n \e[1;31m* $Error *\e[0m\n\n Pritisnite \e[1;32mEnter\e[0m za nastavak...\n Press \e[1;32mEnter\e[0m to continue...\n\n"
  read -p ""
 fi
 mount /dev/$Disk$HomePart /mnt/home # Montiraj /home particiju
@@ -511,7 +511,7 @@ echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
 pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp os-prober p7zip perl-data-dump openssh sis-dri transmission-gtk ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools zip$TouchpadDriver
 if [ $? != 0 ]; then
- echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+ echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
  read -p \"\"
 fi
 echo -e \"\n Dodajem OpenSSH u systemd...\"
@@ -532,7 +532,7 @@ case \"$DEzaInst\" in
  echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
  pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
  if [ $? != 0 ]; then
-  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
  echo -e \"\n Omogućujem korištenje gnome-keyringa...\"
@@ -553,7 +553,7 @@ case \"$DEzaInst\" in
  echo -e \"\n Pokrećem instalaciju KDE-a...\"
  pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm kdeutils-ark oxygen-gtk2 oxygen-gtk3 vlc
  if [ $? != 0 ]; then
-  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
  systemctl enable kdm.service
@@ -564,7 +564,7 @@ case \"$DEzaInst\" in
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
  pacman -Sy --noconfirm deadbeef gtk-engine-murrine mate mate-extra mate-mplayer mplayer slim zenity
  if [ $? != 0 ]; then
-  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
  systemctl enable slim.service
@@ -574,7 +574,7 @@ case \"$DEzaInst\" in
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
  pacman -Sy --noconfirm deadbeef parole slim thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd zenity
  if [ $? != 0 ]; then
-  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
  systemctl enable slim.service
@@ -584,7 +584,7 @@ case \"$DEzaInst\" in
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
  pacman -Sy --noconfirm galculator gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
  if [ $? != 0 ]; then
-  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
  systemctl enable lxdm.service
