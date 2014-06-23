@@ -1,7 +1,7 @@
 #!/bin/sh
 #################################
 # What	 : Arch-Install-Script	#
-# Which	 : version 6.6		#
+# Which	 : version 6.66		#
 # Who	 : Cooleech		#
 # Under  : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -470,6 +470,10 @@ echo -e "\n Osvježavanje liste...\n"
 pacman -Syy
 echo -e "\n Instalacija osnovnog sustava...\n"
 pacstrap /mnt base base-devel
+if [ $? != 0 ]; then
+ echo -e "\n \e[1;31m* $Error *\e[0m\n\n Pritisnite \e[1;32mEnter\e[0m za nastavak...\n\nPress \e[1;32mEnter\e[0m to continue...\n\n"
+ read -p ""
+fi
 mount /dev/$Disk$HomePart /mnt/home # Montiraj /home particiju
 echo -e "\n Generiranje fstab datoteke...\n"
 genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/etc/fstab
@@ -477,7 +481,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 #################################
 # What	 : ArchChroot		#
-# Which  : version 6.63		#
+# Which  : version 6.66		#
 # Who	 : Cooleech		#
 # Under	 : GPLv2		#
 # E-mail : cooleechATgmail.com	#
@@ -506,6 +510,10 @@ hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
 pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp os-prober p7zip perl-data-dump openssh sis-dri transmission-gtk ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools zip$TouchpadDriver
+if [ $? != 0 ]; then
+ echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+ read -p \"\"
+fi
 echo -e \"\n Dodajem OpenSSH u systemd...\"
 systemctl enable sshd
 echo -e \"\n Postavljam tipkovnicu na $Layout layout...\"
@@ -523,6 +531,10 @@ case \"$DEzaInst\" in
 1*|2*|3*|4*)
  echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
  pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
+ if [ $? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  read -p \"\"
+ fi
  echo -e \"\n Omogućujem korištenje gnome-keyringa...\"
  echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)\nexport GPG_AGENT_INFO SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
 ;;
@@ -540,6 +552,10 @@ case \"$DEzaInst\" in
 1*)
  echo -e \"\n Pokrećem instalaciju KDE-a...\"
  pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm kdeutils-ark oxygen-gtk2 oxygen-gtk3 vlc
+ if [ $? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  read -p \"\"
+ fi
  systemctl enable kdm.service
  echo \"auth            optional        pam_gnome_keyring.so\" >> /etc/pam.d/kscreensaver
  echo -e \"exec startkde\" >> /home/$Korisnik/.xinitrc
@@ -547,18 +563,30 @@ case \"$DEzaInst\" in
 2*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
  pacman -Sy --noconfirm deadbeef gtk-engine-murrine mate mate-extra mate-mplayer mplayer slim zenity
+ if [ $? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  read -p \"\"
+ fi
  systemctl enable slim.service
  echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
 3*)
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
  pacman -Sy --noconfirm deadbeef parole slim thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd zenity
+ if [ $? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  read -p \"\"
+ fi
  systemctl enable slim.service
  echo -e \"exec startxfce4\" >> /home/$Korisnik/.xinitrc
 ;;
 4*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
  pacman -Sy --noconfirm galculator gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
+ if [ $? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n\nPress Enter to continue...\n\n\"
+  read -p \"\"
+ fi
  systemctl enable lxdm.service
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
@@ -635,7 +663,7 @@ echo -e \"# fix broken grub.cfg gen\nGRUB_DISABLE_SUBMENU=y\" >> /etc/default/gr
 echo -e \"\n Konfiguracija GRUB bootloadera...\"
 grub-mkconfig -o /boot/grub/grub.cfg
 rm -f /root/.bashrc
-rm -f /etc/ArchChroot\"" > /mnt/etc/ArchChroot
+rm -f /etc/ArchChroot" > /mnt/etc/ArchChroot
 #==================================================================================================#
 echo -e "sh /etc/ArchChroot\nexit" > /mnt/root/.bashrc
 arch-chroot /mnt /bin/bash
