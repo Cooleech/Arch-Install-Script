@@ -466,8 +466,8 @@ sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiraj sve mirrore
 echo -e "\n $AddFastMir \e[32mSO\e[35mK\e[0m:\n\n\t\e[1;34mhttp://sok.hr\e[0m\n"
 rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 clear
-echo -e "\n Osvježavanje liste...\n"
-pacman -Syy
+echo -e "\n Osvježavanje keyringa...\n"
+pacman -Sy --noconfirm archlinux-keyring
 echo -e "\n Instalacija osnovnog sustava...\n"
 pacstrap /mnt base base-devel
 if [ $? != 0 ]; then
