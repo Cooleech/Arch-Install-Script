@@ -510,7 +510,7 @@ hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
 pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools gksu grub-bios gstreamer0.10-plugins gvfs firefox flac flashplugin lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp os-prober p7zip perl-data-dump openssh sis-dri transmission-gtk ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xf86-video-v4l xorg-xclock xorg-server xorg-xinit xorg-server-utils xterm vorbis-tools zip$TouchpadDriver
-if [ $? != 0 ]; then
+if [ \$? != 0 ]; then
  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
  read -p \"\"
 fi
@@ -531,7 +531,7 @@ case \"$DEzaInst\" in
 1*|2*|3*|4*)
  echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
  pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
- if [ $? != 0 ]; then
+ if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
@@ -552,7 +552,7 @@ case \"$DEzaInst\" in
 1*)
  echo -e \"\n Pokrećem instalaciju KDE-a...\"
  pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm kdeutils-ark oxygen-gtk2 oxygen-gtk3 vlc
- if [ $? != 0 ]; then
+ if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
@@ -563,7 +563,7 @@ case \"$DEzaInst\" in
 2*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
  pacman -Sy --noconfirm deadbeef gtk-engine-murrine mate mate-extra mate-mplayer mplayer slim zenity
- if [ $? != 0 ]; then
+ if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
@@ -573,7 +573,7 @@ case \"$DEzaInst\" in
 3*)
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
  pacman -Sy --noconfirm deadbeef parole slim thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd zenity
- if [ $? != 0 ]; then
+ if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
@@ -583,7 +583,7 @@ case \"$DEzaInst\" in
 4*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
  pacman -Sy --noconfirm galculator gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
- if [ $? != 0 ]; then
+ if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
