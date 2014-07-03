@@ -659,7 +659,7 @@ echo -e \"\n Instalacija GRUB bootloadera...\"
 grub-install --target=i386-pc --recheck /dev/$Disk
 echo -e \"\n Kopiranje GRUB poruka...\"
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
-echo -e \"# fix broken grub.cfg gen\nGRUB_DISABLE_SUBMENU=y\" >> /etc/default/grub # Popravi GRUB konfiguraciju
+# echo -e \"# fix broken grub.cfg gen\nGRUB_DISABLE_SUBMENU=y\" >> /etc/default/grub # Popravi GRUB konfiguraciju
 echo -e \"\n Konfiguracija GRUB bootloadera...\"
 grub-mkconfig -o /boot/grub/grub.cfg
 rm -f /root/.bashrc
