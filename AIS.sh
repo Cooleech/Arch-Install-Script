@@ -15,7 +15,7 @@ case "$Language" in
 e*)
 EnterYourUsername="Enter your ( \e[36muser\e[0m ) name"
 Warning="WARNING"
-NoUsername="You didn't provide any username..."
+NoUsername="You didn't provide any username"
 EnterUserPass="Enter password for user"
 NoDisplaying="( will not display entered )"
 ReenterUserPass="Reenter password for user"
@@ -93,7 +93,7 @@ EnterTo="Enter to"
 *)
 EnterYourUsername="Upišite svoje ( \e[36mkorisničko\e[0m ) ime"
 Warning="UPOZORENJE"
-NoUsername="Niste upisali korisničko ime..."
+NoUsername="Niste upisali korisničko ime"
 EnterUserPass="Upišite lozinku za korisnika"
 NoDisplaying="( neće prikazati unos )"
 ReenterUserPass="Ponovo upišite lozinku za korisnika"
