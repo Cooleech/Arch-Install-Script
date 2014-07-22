@@ -495,6 +495,8 @@ useradd -m -g users -G wheel,storage,power -s /bin/bash $Korisnik
 echo \"$LozinkaKorisnika\" > /tmp/userpass
 passwd $Korisnik < /tmp/userpass
 rm -f /tmp/userpass
+echo -e \"\n Uređivanje pacman.conf datoteke...\"
+sed -i 's/#Color/Color/g' /etc/pacman.conf
 echo -e \"\n Generiranje jezika...\"
 sed -i 's/#en_IE/en_IE/g' /etc/locale.gen
 sed -i 's/#hr_HR/hr_HR/g' /etc/locale.gen
