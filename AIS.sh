@@ -1,11 +1,11 @@
 #!/bin/sh
-#################################
-# What	 : Arch-Install-Script	#
-# Which	 : version 6.66		#
-# Who	 : Cooleech		#
-# Under  : GPLv2		#
-# E-mail : cooleechATgmail.com	#
-#################################
+################################
+# What	 : Arch-Install-Script #
+# Which	 : version 6.70        #
+# Who	 : Cooleech            #
+# Under  : GPLv2               #
+# E-mail : cooleechATgmail.com #
+################################
 #==============================================================================#
 clear
 echo -e "\n \e[1;34mOdaberite jezik instalera\e[0m | \e[1;34mPick installer's language\e[0m:\n\n \e[36mh\e[0m = \e[36mHrvatski\e[0m\t<= default\n\n \e[36me\e[0m = \e[36mEnglish\e[0m\n"
@@ -65,15 +65,15 @@ Yes="yes"
 No="no"
 NoSwapPart="swap partition not selected"
 EnterHostName="Enter hostname ( no spaces, just \e[1;32mEnter\e[0m for"
-EnterDEnum="Enter number beside the DE you wish to install"
-IllPickLater="I'll install DE or WM later"
+EnterDE="Enter a letter beside the DE you wish to install"
+IllPickLater="None. I'll install DE or WM later"
 AutoLoginAs="Would you like to use autologin for"
 AtLogin="at login"
 NumLockOn="Would you like to have Num Lock turned on $AtLogin"
 WillBeOn="will be turned on"
 WillBeOff="will be turned off"
 NoDEorWMinstall="There won't be any DE or WM installation, so after base install\n you can do it by canceling reboot and reentering chroot enviroment manualy"
-DEinstNotSel="no DE installaton selected"
+DEinstNotSel="No DE installaton selected"
 ThisIsMobilePC="This PC is mobile (laptop or netbook)"
 yN="y/N"
 Overview="Important settings overview"
@@ -143,15 +143,15 @@ Yes="da"
 No="ne"
 NoSwapPart="niste odabrali swap particiju"
 EnterHostName="Upišite ime hosta ( bez razmaka, samo \e[1;32mEnter\e[0m za"
-EnterDEnum="Upišite broj pored DE-a koji želite instalalirati"
-IllPickLater="kasnije ću instalirati DE ili WM"
+EnterDE="Upišite slovo pored DE-a koji želite instalalirati"
+IllPickLater="Nijedan. Kasnije ću instalirati DE ili WM"
 AutoLoginAs="Želite li biti automatski ulogirani kao"
 AtLogin="pri logiranju"
 NumLockOn="Želite li imati uključen Num Lock $AtLogin u sustav"
 WillBeOn="bit će uključen"
 WillBeOff="neće biti uključen"
 NoDEorWMinstall="Neće biti instaliran nikakav DE ili WM, no nakon instalacije\n možete otkazati reboot i instalirati što želite ponovnim ulaskom u chroot okruženje"
-DEinstNotSel="niste odabrali instalaciju DE-a"
+DEinstNotSel="Niste odabrali instalaciju DE-a"
 ThisIsMobilePC="Ovo računalo je prijenosno"
 yN="d/N"
 Overview="Pregled važnijih postavki"
@@ -402,11 +402,12 @@ if [ "$ImeHosta" = "" ]; then
 fi
 NET_DEVICE
 clear
-echo -e "\n $EnterDEnum:\n\n \e[36m0\e[0m = \e[36m$IllPickLater\e[0m <= default\n\n \e[36m1\e[0m = \e[36mKDE\n
- 2\e[0m = \e[36mMATE\n\n 3\e[0m = \e[36mXfce\n\n 4\e[0m = \e[36mLXDE\e[0m\n"
+echo -e "\n $EnterDE:\n\n \e[36mN\e[0m = \e[36m$IllPickLater\e[0m <= default\n\n \e[36mK\e[0m = \e[36mKDE\n
+ M\e[0m = \e[36mMATE\n\n X\e[0m = \e[36mXfce\n\n L\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
+DEzaInst="${DEzaInst,,}"
 case "$DEzaInst" in
-1*|2*|3*|4*)
+k*|m*|x*|l*)
  echo -e "\n $AutoLoginAs \e[1;36m$Korisnik\e[0m? ( $Yn )\n"
  read AutoLogin
  AutoLogin="${AutoLogin,,}"
@@ -479,13 +480,13 @@ echo -e "\n Generiranje fstab datoteke...\n"
 genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/etc/fstab
 #==============================================================================#
 echo "#!/bin/sh
-#################################
-# What	 : ArchChroot		#
-# Which  : version 6.66		#
-# Who	 : Cooleech		#
-# Under	 : GPLv2		#
-# E-mail : cooleechATgmail.com	#
-#################################
+################################
+# What	 : ArchChroot          #
+# Which  : version 6.70        #
+# Who	 : Cooleech            #
+# Under	 : GPLv2               #
+# E-mail : cooleechATgmail.com #
+################################
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules
 loadkeys croat
 echo \"$RootLozinka\" > /tmp/rootpass
@@ -530,7 +531,7 @@ echo -e \"\n Podešavam vrijeme...\"
 ntpd -qg
 hwclock -w
 case \"$DEzaInst\" in
-1*|2*|3*|4*)
+k*|m*|x*|l*)
  echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
  pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
  if [ \$? != 0 ]; then
@@ -551,7 +552,7 @@ echo -e \"polkit.addRule(function(action, subject) {\n\tif (action.id.indexOf(\\
 	\treturn polkit.Result.YES;\n\t}\n});\" > /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and sudo for all
 case \"$DEzaInst\" in
-1*)
+k*)
  echo -e \"\n Pokrećem instalaciju KDE-a...\"
  pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm kdeutils-ark oxygen-gtk2 oxygen-gtk3 vlc
  if [ \$? != 0 ]; then
@@ -562,27 +563,40 @@ case \"$DEzaInst\" in
  echo \"auth            optional        pam_gnome_keyring.so\" >> /etc/pam.d/kscreensaver
  echo -e \"exec startkde\" >> /home/$Korisnik/.xinitrc
 ;;
-2*)
+m*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
- pacman -Sy --noconfirm deadbeef gtk-engine-murrine mate mate-extra mate-mplayer mplayer slim zenity
+ pacman -Sy --noconfirm deadbeef gtk-engine-murrine lxdm mate mate-extra mate-mplayer mplayer zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
- systemctl enable slim.service
+ systemctl enable lxdm.service
+ sed -i 's/startlxde/mate-session/g' /etc/lxdm/Xsession
+ sed -i 's/# session/session/g' /etc/lxdm/lxdm.conf
+ sed -i 's/startlxde/mate-session/g' /etc/lxdm/lxdm.conf
  echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
-3*)
+x*)
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
- pacman -Sy --noconfirm deadbeef parole slim thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd zenity
+ pacman -Sy --noconfirm deadbeef lxdm parole thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
  fi
- systemctl enable slim.service
+ systemctl enable lxdm.service
+ sed -i 's/startlxde/startxfce4/g' /etc/lxdm/Xsession
+ sed -i 's/# session/session/g' /etc/lxdm/lxdm.conf
+ sed -i 's/startlxde/startxfce4/g' /etc/lxdm/lxdm.conf
+ echo -e \"\n Modificiram desktop ikone Xfce4 DE-a...\"
+ echo -e \"style \\\"xfdesktop-icon-view\\\" {\n\tXfdesktopIconView::label-alpha = 0
+	XfdesktopIconView::shadow-x-offset = 1\n\tXfdesktopIconView::shadow-y-offset = 1
+	XfdesktopIconView::shadow-color = \\\"#000000\\\"\n\tXfdesktopIconView::selected-shadow-x-offset = 0
+	XfdesktopIconView::selected-shadow-y-offset = 0\n\tXfdesktopIconView::selected-shadow-color = \\\"#000000\\\"
+	fg[NORMAL] = \\\"#ffffff\\\"\n\tfg[SELECTED] = \\\"#ffffff\\\"\n\tfg[ACTIVE] = \\\"#ffffff\\\" }
+	widget_class \\\"*XfdesktopIconView*\\\" style \\\"xfdesktop-icon-view\\\"\" >> /home/$Korisnik/.gtkrc-2.0
  echo -e \"exec startxfce4\" >> /home/$Korisnik/.xinitrc
 ;;
-4*)
+l*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
  pacman -Sy --noconfirm galculator gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
  if [ \$? != 0 ]; then
@@ -593,7 +607,7 @@ case \"$DEzaInst\" in
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
 *)
- echo -e \"\n \e[1;36mINFO:\e[31m Niste odabrali instalaciju DE-a!\e[0m\n\"
+ echo -e \"\n \e[1;36mINFO:\e[31m $DEinstNotSel!\e[0m\n\"
 ;;
 esac
 case \"$NumLock\" in
@@ -601,9 +615,6 @@ d*)
  echo -e \"\n Uključujem numlock pri logiranju...\"
  if [ -e /usr/share/config/kdm/kdmrc ]; then
   sed -i 's/#NumLock=Off/NumLock=On/g' /usr/share/config/kdm/kdmrc
- fi
- if [ -e /etc/slim.conf ]; then
-  sed -i 's/# numlock/numlock/g' /etc/slim.conf
  fi
  if [ -e /etc/lxdm/lxdm.conf ]; then
   sed -i 's/# numlock=0/numlock=1/g' /etc/lxdm/lxdm.conf
@@ -648,10 +659,6 @@ d*|\"\")
   sed -i 's/#AutoLoginUser=fred/AutoLoginUser=$Korisnik/g' /usr/share/config/kdm/kdmrc
   sed -i 's/#AutoLoginEnable/AutoLoginEnable/g' /usr/share/config/kdm/kdmrc
  fi
- if [ -e /etc/slim.conf ]; then
-  sed -i 's/#default_user/default_user/g' /etc/slim.conf && sed -i 's/simone/$Korisnik/g' /etc/slim.conf
-  sed -i 's/#auto_login          no/auto_login          yes/g' /etc/slim.conf
- fi
  if [ -e /etc/lxdm/lxdm.conf ]; then
   sed -i 's/# autologin=dgod/autologin=$Korisnik/g' /etc/lxdm/lxdm.conf
  fi
@@ -661,7 +668,6 @@ echo -e \"\n Instalacija GRUB bootloadera...\"
 grub-install --target=i386-pc --recheck /dev/$Disk
 echo -e \"\n Kopiranje GRUB poruka...\"
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
-# echo -e \"# fix broken grub.cfg gen\nGRUB_DISABLE_SUBMENU=y\" >> /etc/default/grub # Popravi GRUB konfiguraciju
 echo -e \"\n Konfiguracija GRUB bootloadera...\"
 grub-mkconfig -o /boot/grub/grub.cfg
 rm -f /root/.bashrc
