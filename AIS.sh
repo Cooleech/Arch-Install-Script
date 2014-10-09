@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.70        #
+# Which	 : version 6.71        #
 # Who	 : Cooleech            #
 # Under  : GPLv2               #
 # E-mail : cooleechATgmail.com #
@@ -446,7 +446,7 @@ echo -e "\n $Overview:\n\n $UserName \e[36m$Korisnik\e[0m\n $HostName:\t \e[36m$
 CONTINUE_OR_CANCEL
 clear
 echo -e "\n Formatiranje particija...\n"
-mkfs.ext4 /dev/$Disk$RootPart && mount /dev/$Disk$RootPart /mnt # Montiraj root particiju
+mkfs.ext4 /dev/$Disk$RootPart
 if [ "$HomePart" != "" ]; then
  echo -e "\n Stvaram mapu /mnt/home..."
  mkdir /mnt/home
@@ -459,7 +459,25 @@ if [ "$HomePart" != "" ]; then
  esac
 fi
 if [ "$SwapPart" != "" ]; then
- mkswap /dev/$Disk$SwapPart && swapon /dev/$Disk$SwapPart # Montiraj swap
+ mkswap /dev/$Disk$SwapPart
+fi
+echo -e "\n Montiram root particiju (/dev/$Disk$RootPart)...\n"
+mount /dev/$Disk$RootPart /mnt
+if [ $? != 0 ]; then
+ echo -e "\n \e[1;31m* $Error *\e[0m\n\n Pritisnite \e[1;32mEnter\e[0m za nastavak...\n Press \e[1;32mEnter\e[0m to continue...\n\n"
+ read -p ""
+fi
+echo -e "\n Montiram home particiju (/dev/$Disk$HomePart)...\n"
+mount /dev/$Disk$HomePart /mnt/home
+if [ $? != 0 ]; then
+ echo -e "\n \e[1;31m* $Error *\e[0m\n\n Pritisnite \e[1;32mEnter\e[0m za nastavak...\n Press \e[1;32mEnter\e[0m to continue...\n\n"
+ read -p ""
+fi
+echo -e "\n Montiram swap particiju (/dev/$Disk$SwapPart)...\n"
+swapon /dev/$Disk$SwapPart
+if [ $? != 0 ]; then
+ echo -e "\n \e[1;31m* $Error *\e[0m\n\n Pritisnite \e[1;32mEnter\e[0m za nastavak...\n Press \e[1;32mEnter\e[0m to continue...\n\n"
+ read -p ""
 fi
 clear
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup # Bekapiranje mirrorliste
@@ -475,7 +493,6 @@ if [ $? != 0 ]; then
  echo -e "\n \e[1;31m* $Error *\e[0m\n\n Pritisnite \e[1;32mEnter\e[0m za nastavak...\n Press \e[1;32mEnter\e[0m to continue...\n\n"
  read -p ""
 fi
-mount /dev/$Disk$HomePart /mnt/home # Montiraj /home particiju
 echo -e "\n Generiranje fstab datoteke...\n"
 genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/etc/fstab
 #==============================================================================#
