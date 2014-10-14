@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.72        #
+# Which	 : version 6.73        #
 # Who	 : Cooleech            #
 # Under  : GPLv2               #
 # E-mail : cooleechATgmail.com #
@@ -449,9 +449,6 @@ echo -e "\n Formatiranje particija...\n"
 umount /dev/$Disk$RootPart # Ako je montirana, odmontiraj
 mkfs.ext4 /dev/$Disk$RootPart
 if [ "$HomePart" != "" ]; then
- echo -e "\n Stvaram mapu /mnt/home..."
- sleep 1 # Testna pauza (nije stvaralo home mapu)
- mkdir /mnt/home
  case "$Formatiraj" in
  d*|y*|"")
   echo -e "\n Formatiram /dev/$Disk$HomePart..."
@@ -469,6 +466,8 @@ if [ $? != 0 ]; then
  echo -e "\n \e[1;31m* $Error *\e[0m\n\n Pritisnite \e[1;32mEnter\e[0m za nastavak...\n Press \e[1;32mEnter\e[0m to continue...\n\n"
  read -p ""
 fi
+echo -e "\n Stvaram mapu /mnt/home..."
+mkdir /mnt/home
 echo -e "\n Montiram home particiju (/dev/$Disk$HomePart)...\n"
 mount /dev/$Disk$HomePart /mnt/home
 if [ $? != 0 ]; then
