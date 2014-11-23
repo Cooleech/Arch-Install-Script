@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.74        #
+# Which	 : version 6.75        #
 # Who	 : Cooleech            #
 # Under  : GPLv2               #
 # E-mail : cooleechATgmail.com #
@@ -447,13 +447,13 @@ CONTINUE_OR_CANCEL
 clear
 echo -e "\n Formatiranje particija...\n"
 umount /dev/$Disk$RootPart # Ako je montirana, odmontiraj
-mkfs.ext4 /dev/$Disk$RootPart
+mkfs.ext4 -q /dev/$Disk$RootPart
 if [ "$HomePart" != "" ]; then
  case "$Formatiraj" in
  d*|y*|"")
   echo -e "\n Formatiram /dev/$Disk$HomePart..."
   umount /dev/$Disk$HomePart # Ako je montirana, odmontiraj
-  mkfs.ext4 /dev/$Disk$HomePart
+  mkfs.ext4 -q /dev/$Disk$HomePart
  ;;
  esac
 fi
@@ -504,7 +504,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.70        #
+# Which  : version 6.71        #
 # Who	 : Cooleech            #
 # Under	 : GPLv2               #
 # E-mail : cooleechATgmail.com #
@@ -587,7 +587,7 @@ k*)
 ;;
 m*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
- pacman -Sy --noconfirm deadbeef gtk-engine-murrine lxdm mate mate-extra mate-mplayer mplayer zenity
+ pacman -Sy --noconfirm deadbeef gtk-engine-murrine lxdm mate mate-extra mplayer zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
