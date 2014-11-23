@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.75        #
+# Which	 : version 6.76        #
 # Who	 : Cooleech            #
 # Under  : GPLv2               #
 # E-mail : cooleechATgmail.com #
@@ -446,14 +446,14 @@ echo -e "\n $Overview:\n\n $UserName \e[36m$Korisnik\e[0m\n $HostName:\t \e[36m$
 CONTINUE_OR_CANCEL
 clear
 echo -e "\n Formatiranje particija...\n"
-umount /dev/$Disk$RootPart # Ako je montirana, odmontiraj
-mkfs.ext4 -q /dev/$Disk$RootPart
+umount /dev/$Disk$RootPart 2>/dev/null # Ako je montirana, odmontiraj
+mkfs.ext4 -Fq /dev/$Disk$RootPart
 if [ "$HomePart" != "" ]; then
  case "$Formatiraj" in
  d*|y*|"")
   echo -e "\n Formatiram /dev/$Disk$HomePart..."
-  umount /dev/$Disk$HomePart # Ako je montirana, odmontiraj
-  mkfs.ext4 -q /dev/$Disk$HomePart
+  umount /dev/$Disk$HomePart 2>/dev/null # Ako je montirana, odmontiraj
+  mkfs.ext4 -Fq /dev/$Disk$HomePart
  ;;
  esac
 fi
