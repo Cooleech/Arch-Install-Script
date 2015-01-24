@@ -504,7 +504,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.72        #
+# Which  : version 6.73        #
 # Who	 : Cooleech            #
 # Under	 : GPLv2               #
 # E-mail : cooleechATgmail.com #
@@ -576,7 +576,7 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and s
 case \"$DEzaInst\" in
 k*)
  echo -e \"\n Pokrećem instalaciju KDE-a...\"
- pacman -Sy --noconfirm kdebase kdebase-workspace kdegraphics-gwenview kdegraphics-ksnapshot kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm kdeutils-ark oxygen-gtk2 oxygen-gtk3 vlc
+ pacman -Sy --noconfirm kdebase kdebase-workspace gwenview kdegraphics-ksnapshot kdemultimedia-kmix kdeplasma-addons-applets-showdesktop kdeplasma-applets-plasma-nm kdeutils-ark oxygen-gtk2 oxygen-gtk3 vlc
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
