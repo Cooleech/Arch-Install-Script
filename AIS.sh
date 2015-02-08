@@ -504,7 +504,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.73        #
+# Which  : version 6.74        #
 # Who	 : Cooleech            #
 # Under	 : GPLv2               #
 # E-mail : cooleechATgmail.com #
@@ -665,6 +665,8 @@ if ! [ -d /home/$Korisnik/Videos ]; then
  mkdir /home/$Korisnik/Videos
 fi
 echo -e \"\n Predajem vlasništvo /home/$Korisnik mape korisniku $Korisnik...\"
+echo -e \"\n Dodajem boju za ls i grep naredbe...\"
+echo -e \"alias ls='ls --color=auto'\nalias grep='grep --color=auto'\" >> /home/$Korisnik/.bashrc
 chown -R $Korisnik /home/$Korisnik
 echo -e \"\n Radim xdg-user-dirs-update...\"
 xdg-user-dirs-update --force --set DOCUMENTS /home/$Korisnik/Documents # Osvježi xdg-user-dirs
