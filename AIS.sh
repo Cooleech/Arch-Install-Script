@@ -504,7 +504,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.75        #
+# Which  : version 6.76        #
 # Who	 : Cooleech            #
 # Under	 : GPLv2               #
 # E-mail : cooleechATgmail.com #
@@ -678,7 +678,7 @@ xdg-user-dirs-update --force --set PUBLICSHARE /home/$Korisnik/Public
 xdg-user-dirs-update --force --set TEMPLATES /home/$Korisnik/Templates
 xdg-user-dirs-update --force --set VIDEOS /home/$Korisnik/Videos
 case \"$AutoLogin\" in
-d*|\"\")
+d*|y*|\"\")
  echo -e \"\n Postavljam auto-login...\"
  if [ -e /usr/share/config/kdm/kdmrc ]; then
   sed -i 's/#AutoLoginUser=fred/AutoLoginUser=$Korisnik/g' /usr/share/config/kdm/kdmrc
