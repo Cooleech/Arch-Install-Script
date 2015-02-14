@@ -1,10 +1,10 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.76        #
+# Which	 : version 6.77        #
 # Who	 : Cooleech            #
-# Under  : GPLv2               #
-# E-mail : cooleechATgmail.com #
+# Where  : GPLv2               #
+# Write	 : cooleechATgmail.com #
 ################################
 #==============================================================================#
 clear
@@ -504,10 +504,10 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.76        #
+# Which  : version 6.77        #
 # Who	 : Cooleech            #
-# Under	 : GPLv2               #
-# E-mail : cooleechATgmail.com #
+# Where	 : GPLv2               #
+# Write	 : cooleechATgmail.com #
 ################################
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules
 loadkeys croat
@@ -665,9 +665,9 @@ fi
 if ! [ -d /home/$Korisnik/Videos ]; then
  mkdir /home/$Korisnik/Videos
 fi
-echo -e \"\n Predajem vlasništvo /home/$Korisnik mape korisniku $Korisnik...\"
 echo -e \"\n Dodajem boju za ls i grep naredbe...\"
 echo -e \"alias ls='ls --color=auto'\nalias grep='grep --color=auto'\" >> /home/$Korisnik/.bashrc
+echo -e \"\n Predajem vlasništvo /home/$Korisnik mape korisniku $Korisnik...\"
 chown -R $Korisnik /home/$Korisnik
 echo -e \"\n Radim xdg-user-dirs-update...\"
 xdg-user-dirs-update --force --set DOCUMENTS /home/$Korisnik/Documents # Osvježi xdg-user-dirs
