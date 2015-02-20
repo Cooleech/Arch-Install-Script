@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.78        #
+# Which	 : version 6.79        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -255,7 +255,7 @@ fi
 function PARTITIONING {
 clear
 echo -e "\n $DisplayDisks:"
-fdisk -l
+lsblk | grep -v "rom\|loop\|airoot"
 echo -e "\n $EnterDiskToPart ( $Without \e[35m/dev/\e[0m $And $Without \e[35m$Numbers\e[0m, $Eg. \e[36msda\e[0m ):\n"
 read Disk
 Disk="${Disk,,}"
@@ -504,7 +504,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.78        #
+# Which  : version 6.79        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -588,7 +588,7 @@ k*)
 ;;
 m*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
- pacman -Sy --noconfirm deadbeef gtk-engine-murrine lxdm mate mate-extra mplayer zenity
+ pacman -Sy --noconfirm deadbeef gtk-engine-murrine lxdm mate mate-extra vlc zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
@@ -601,7 +601,7 @@ m*)
 ;;
 x*)
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
- pacman -Sy --noconfirm deadbeef lxdm parole thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd zenity
+ pacman -Sy --noconfirm deadbeef lxdm thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd vlc zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
@@ -621,7 +621,7 @@ x*)
 ;;
 l*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
- pacman -Sy --noconfirm galculator gnome-mplayer lxde lxdm leafpad obconf xarchiver zenity
+ pacman -Sy --noconfirm galculator gnome-mplayer lxde lxdm leafpad obconf xarchiver vlc zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
@@ -705,4 +705,5 @@ echo -e "\n Odmontiravanje montiranih particija..."
 umount -R /mnt
 swapoff -a
 echo -e "\n\e[36m*********************************\n*\t\e[37m$InstallEnd\e[36m\t*\n*********************************\e[0m\n\n $EnjoyWith \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
-read " $EnterTo reboot..." && reboot
+read \?" $EnterTo reboot..."
+reboot
