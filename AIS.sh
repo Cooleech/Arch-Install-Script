@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.77        #
+# Which	 : version 6.78        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -705,5 +705,4 @@ echo -e "\n Odmontiravanje montiranih particija..."
 umount -R /mnt
 swapoff -a
 echo -e "\n\e[36m*********************************\n*\t\e[37m$InstallEnd\e[36m\t*\n*********************************\e[0m\n\n $EnjoyWith \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
-read -p " $EnterTo reboot..."
-reboot
+read " $EnterTo reboot..." && reboot
