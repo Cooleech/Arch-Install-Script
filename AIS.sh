@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.79        #
+# Which	 : version 6.80        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -504,7 +504,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/sh
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.79        #
+# Which  : version 6.80        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -630,7 +630,7 @@ l*)
  echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
 *)
- echo -e \"\n \e[1;36mINFO:\e[31m $DEinstNotSel!\e[0m\n\"
+ echo -e \"\n \e[1;36mINFO:\e[31m $DEinstNotSel!\e[0m\"
 ;;
 esac
 case \"$NumLock\" in
@@ -705,5 +705,6 @@ echo -e "\n Odmontiravanje montiranih particija..."
 umount -R /mnt
 swapoff -a
 echo -e "\n\e[36m*********************************\n*\t\e[37m$InstallEnd\e[36m\t*\n*********************************\e[0m\n\n $EnjoyWith \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
-read \?" $EnterTo reboot..."
+#read \?" $EnterTo reboot..."
+sleep 5 | echo -e " \nReboot za 5 sekundi... \nRebooting in 5 seconds..."
 reboot
