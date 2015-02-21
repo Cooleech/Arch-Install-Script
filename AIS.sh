@@ -1,7 +1,7 @@
 #!/bin/sh
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.80        #
+# Which	 : version 6.81        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -408,10 +408,11 @@ read DEzaInst
 DEzaInst="${DEzaInst,,}"
 case "$DEzaInst" in
 k*|m*|x*|l*)
- echo -e "\n $AutoLoginAs \e[1;36m$Korisnik\e[0m? ( $Yn )\n"
+ clear
+ echo -e "\n $AutoLoginAs \e[1;36m$Korisnik\e[0m? ( $yN )"
  read AutoLogin
  AutoLogin="${AutoLogin,,}"
- echo -e "\n $NumLockOn? ( $Yn )\n"
+ echo -e "\n $NumLockOn? ( $Yn )"
  read NumLock
  NumLock="${NumLock,,}"
  case "$NumLock" in
@@ -429,8 +430,7 @@ k*|m*|x*|l*)
  CONTINUE_OR_CANCEL
 ;;
 esac
-clear
-echo -e "\n $ThisIsMobilePC? ( $yN )\n"
+echo -e "\n $ThisIsMobilePC? ( $yN )"
 read Prijenosnik
 Prijenosnik="${Prijenosnik,,}"
 case "$Prijenosnik" in
@@ -487,7 +487,7 @@ fi
 clear
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup # Bekapiranje mirrorliste
 sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiraj sve mirrore za test brzine
-echo -e "\n $AddFastMir \e[32mSO\e[35mK\e[0m:\n\n\t\e[1;34mhttp://sok.hr\e[0m\n"
+echo -e "\n $AddFastMir \e[32mSO\e[35mK\e[0m:\n\n\t\e[1;34mhttp://sok.hr\e[0m\n" # Reklama za udrugu SOK
 rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 clear
 echo -e "\n Osvježavanje keyringa...\n"
@@ -510,7 +510,6 @@ echo "#!/bin/sh
 # Write	 : cooleechATgmail.com #
 ################################
 ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules
-loadkeys croat
 echo \"$RootLozinka\" > /tmp/rootpass
 passwd < /tmp/rootpass
 rm -f /tmp/rootpass
@@ -596,7 +595,7 @@ m*)
   read -p \"\"
  fi
  systemctl enable lxdm.service
- sed -i 's/startlxde/mate-session/g' /etc/lxdm/Xsession
+ # sed -i 's/startlxde/mate-session/g' /etc/lxdm/Xsession
  sed -i 's/# session/session/g' /etc/lxdm/lxdm.conf
  sed -i 's/startlxde/mate-session/g' /etc/lxdm/lxdm.conf
  echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
@@ -609,7 +608,7 @@ x*)
   read -p \"\"
  fi
  systemctl enable lxdm.service
- sed -i 's/startlxde/startxfce4/g' /etc/lxdm/Xsession
+ # sed -i 's/startlxde/startxfce4/g' /etc/lxdm/Xsession
  sed -i 's/# session/session/g' /etc/lxdm/lxdm.conf
  sed -i 's/startlxde/startxfce4/g' /etc/lxdm/lxdm.conf
  echo -e \"\n Modificiram desktop ikone Xfce4 DE-a...\"
@@ -680,7 +679,7 @@ xdg-user-dirs-update --force --set PUBLICSHARE /home/$Korisnik/Public
 xdg-user-dirs-update --force --set TEMPLATES /home/$Korisnik/Templates
 xdg-user-dirs-update --force --set VIDEOS /home/$Korisnik/Videos
 case \"$AutoLogin\" in
-d*|y*|\"\")
+d*|y*|)
  echo -e \"\n Postavljam auto-login...\"
  if [ -e /usr/share/config/kdm/kdmrc ]; then
   sed -i 's/#AutoLoginUser=fred/AutoLoginUser=$Korisnik/g' /usr/share/config/kdm/kdmrc
@@ -707,6 +706,5 @@ echo -e "\n Odmontiravanje montiranih particija..."
 umount -R /mnt
 swapoff -a
 echo -e "\n\e[36m*********************************\n*\t\e[37m$InstallEnd\e[36m\t*\n*********************************\e[0m\n\n $EnjoyWith \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
-#read \?" $EnterTo reboot..."
 sleep 5 | echo -e " \nReboot za 5 sekundi... \nRebooting in 5 seconds..."
 reboot
