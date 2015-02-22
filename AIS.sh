@@ -679,7 +679,7 @@ xdg-user-dirs-update --force --set PUBLICSHARE /home/$Korisnik/Public
 xdg-user-dirs-update --force --set TEMPLATES /home/$Korisnik/Templates
 xdg-user-dirs-update --force --set VIDEOS /home/$Korisnik/Videos
 case \"$AutoLogin\" in
-d*|y*|)
+d*|y*)
  echo -e \"\n Postavljam auto-login...\"
  if [ -e /usr/share/config/kdm/kdmrc ]; then
   sed -i 's/#AutoLoginUser=fred/AutoLoginUser=$Korisnik/g' /usr/share/config/kdm/kdmrc
