@@ -534,7 +534,7 @@ hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
 pacman-db-upgrade # Fix za starije iso datoteke
-pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools firefox flac flashplugin gksu grub-bios gstreamer0.10-plugins gvfs lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp openssh os-prober p7zip perl-data-dump ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-evdev xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xorg-server xorg-server-utils xorg-xclock xorg-xinit xterm vorbis-tools zip$TouchpadDriver
+pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools firefox flac flashplugin gksu grub-bios gstreamer0.10-plugins gvfs lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp openssh os-prober p7zip perl-data-dump ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xorg-server xorg-server-utils xorg-xclock xorg-xinit xterm vorbis-tools zip$TouchpadDriver
 if [ \$? != 0 ]; then
  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
  read -p \"\"
