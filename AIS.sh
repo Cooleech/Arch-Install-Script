@@ -734,5 +734,5 @@ echo -e "\n Odmontiravanje montiranih particija..."
 umount -R /mnt
 swapoff -a
 echo -e "\n\e[36m*********************************\n*\t\e[37m$InstallEnd\e[36m\t*\n*********************************\e[0m\n\n $EnjoyWith \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
-sleep 5 | echo -e "\n Reboot za 5 sekundi... \nRebooting in 5 seconds..."
+sleep 5 | echo -e "\n Reboot za 5 sekundi...\n\n Rebooting in 5 seconds..."
 reboot
