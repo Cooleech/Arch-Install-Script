@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.81        #
+# Which	 : version 6.82        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -403,11 +403,11 @@ fi
 NET_DEVICE
 clear
 echo -e "\n $EnterDE:\n\n \e[36mN\e[0m = \e[36m$IllPickLater\e[0m <= default\n\n \e[36mK\e[0m = \e[36mKDE\n
- M\e[0m = \e[36mMATE\n\n X\e[0m = \e[36mXfce\n\n L\e[0m = \e[36mLXDE\e[0m\n"
+ \e[36mG\e[0m = \e[36mGNOME\n\n M\e[0m = \e[36mMATE\n\n X\e[0m = \e[36mXfce\n\n L\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
 DEzaInst="${DEzaInst,,}"
 case "$DEzaInst" in
-k*|m*|x*|l*)
+k*|g*|m*|x*|l*)
  clear
  echo -e "\n $AutoLoginAs \e[1;36m$Korisnik\e[0m? ( $yN )"
  read AutoLogin
@@ -490,6 +490,8 @@ sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiraj sve mirrore
 echo -e "\n $AddFastMir \e[32mSO\e[35mK\e[0m:\n\n\t\e[1;34mhttp://sok.hr\e[0m\n" # Reklama za udrugu SOK
 rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 clear
+echo -e "\n Uređivanje pacmana u live modu..\n"
+sed -i 's/#Color/Color/' /etc/pacman.conf
 echo -e "\n Osvježavanje keyringa...\n"
 pacman -Sy --noconfirm archlinux-keyring
 echo -e "\n Instalacija osnovnog sustava...\n"
@@ -501,10 +503,10 @@ fi
 echo -e "\n Generiranje fstab datoteke...\n"
 genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/etc/fstab
 #==============================================================================#
-echo "#!/bin/sh
+echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.81        #
+# Which  : version 6.82        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -534,7 +536,7 @@ hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
 pacman-db-upgrade # Fix za starije iso datoteke
-pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools firefox flac flashplugin gksu grub-bios gstreamer0.10-plugins gvfs lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp openssh os-prober p7zip perl-data-dump ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xorg-server xorg-server-utils xorg-xclock xorg-xinit xterm vorbis-tools zip$TouchpadDriver
+pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools firefox flac flashplugin gksu grub-bios gstreamer0.10-plugins gvfs lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp openssh os-prober p7zip perl-data-dump ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-fbdev xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xorg-server xorg-server-utils xorg-xclock xorg-xinit xterm vorbis-tools zip$TouchpadDriver
 if [ \$? != 0 ]; then
  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
  read -p \"\"
@@ -553,7 +555,7 @@ echo -e \"\n Podešavam vrijeme...\"
 ntpd -qg
 hwclock -w
 case \"$DEzaInst\" in
-k*|m*|x*|l*)
+k*|g*|m*|x*|l*)
  echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
  pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
  if [ \$? != 0 ]; then
@@ -561,7 +563,7 @@ k*|m*|x*|l*)
   read -p \"\"
  fi
  echo -e \"\n Omogućujem korištenje gnome-keyringa...\"
- echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)\nexport GPG_AGENT_INFO SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
+ echo -e \"#!/bin/bash\n\nsource /etc/X11/xinit/xinitrc.d/30-dbus\neval \\\$(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)\nexport SSH_AUTH_SOCK\" > /home/$Korisnik/.xinitrc
 ;;
 esac
 echo -e \"\n Nadopuna za .xinitrc...\"
@@ -586,6 +588,16 @@ k*)
  systemctl enable kdm.service
  echo \"auth            optional        pam_gnome_keyring.so\" >> /etc/pam.d/kscreensaver
  echo -e \"exec startkde\" >> /home/$Korisnik/.xinitrc
+;;
+g*)
+ echo -e \"\n Pokrećem instalaciju GNOME-a...\"
+ pacman -Sy --noconfirm gnome gnome-extra vlc
+ if [ \$? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
+  read -p \"\"
+ fi
+ systemctl enable gdm.service
+ echo -e \"exec gnome-session\" >> /home/$Korisnik/.xinitrc
 ;;
 m*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
@@ -666,8 +678,8 @@ fi
 if ! [ -d /home/$Korisnik/Videos ]; then
  mkdir /home/$Korisnik/Videos
 fi
-echo -e \"\n Dodajem boju za ls i grep naredbe...\"
-echo -e \"alias ls='ls --color=auto'\nalias grep='grep --color=auto'\" >> /home/$Korisnik/.bashrc
+echo -e \"\n Dodajem boju za grep naredbu...\"
+echo -e \"alias grep='grep --color=auto'\" >> /home/$Korisnik/.bashrc
 echo -e \"\n Predajem vlasništvo /home/$Korisnik mape korisniku $Korisnik...\"
 chown -R $Korisnik /home/$Korisnik
 echo -e \"\n Radim xdg-user-dirs-update...\"
@@ -685,6 +697,10 @@ d*|y*)
   sed -i 's/#AutoLoginUser=fred/AutoLoginUser=$Korisnik/g' /usr/share/config/kdm/kdmrc
   sed -i 's/#AutoLoginEnable/AutoLoginEnable/g' /usr/share/config/kdm/kdmrc
  fi
+ if [ -e /etc/gdm/custom.conf ]; then
+  sed -i '/daemon/ a\AutomaticLogin=$Korisnik\nAutomaticLoginEnable=True' /etc/gdm/custom.conf # Thnx, vision! :)
+  #sed -i 's/daemon\]/daemon\]\nAutomaticLogin=$Korisnik\nAutomaticLoginEnable=True/' /etc/gdm/custom.conf # Radi, ali ovo iznad je bolje
+ fi
  if [ -e /etc/lxdm/lxdm.conf ]; then
   sed -i 's/# autologin=dgod/autologin=$Korisnik/g' /etc/lxdm/lxdm.conf
  fi
@@ -692,10 +708,22 @@ d*|y*)
 esac
 echo -e \"\n Instalacija GRUB bootloadera...\"
 grub-install --target=i386-pc --recheck /dev/$Disk
+if [ \$? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak ili Crtl + C za prekid...\n Press Enter to continue or Ctrl + C to cancel...\n\n\"
+  read -p \"\"
+fi
 echo -e \"\n Kopiranje GRUB poruka...\"
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+if [ \$? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
+  read -p \"\"
+fi
 echo -e \"\n Konfiguracija GRUB bootloadera...\"
 grub-mkconfig -o /boot/grub/grub.cfg
+if [ \$? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak ili Crtl + C za prekid...\n Press Enter to continue or Ctrl + C to cancel...\n\n\"
+  read -p \"\"
+fi
 rm -f /root/.bashrc
 rm -f /etc/ArchChroot" > /mnt/etc/ArchChroot
 #==================================================================================================#
@@ -706,5 +734,5 @@ echo -e "\n Odmontiravanje montiranih particija..."
 umount -R /mnt
 swapoff -a
 echo -e "\n\e[36m*********************************\n*\t\e[37m$InstallEnd\e[36m\t*\n*********************************\e[0m\n\n $EnjoyWith \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
-sleep 5 | echo -e " \nReboot za 5 sekundi... \nRebooting in 5 seconds..."
+sleep 5 | echo -e "\n Reboot za 5 sekundi... \nRebooting in 5 seconds..."
 reboot
