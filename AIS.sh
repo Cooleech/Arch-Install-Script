@@ -506,7 +506,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.82        #
+# Which  : version 6.83        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -607,7 +607,6 @@ m*)
   read -p \"\"
  fi
  systemctl enable lxdm.service
- # sed -i 's/startlxde/mate-session/g' /etc/lxdm/Xsession
  sed -i 's/# session/session/g' /etc/lxdm/lxdm.conf
  sed -i 's/startlxde/mate-session/g' /etc/lxdm/lxdm.conf
  echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
@@ -620,7 +619,6 @@ x*)
   read -p \"\"
  fi
  systemctl enable lxdm.service
- # sed -i 's/startlxde/startxfce4/g' /etc/lxdm/Xsession
  sed -i 's/# session/session/g' /etc/lxdm/lxdm.conf
  sed -i 's/startlxde/startxfce4/g' /etc/lxdm/lxdm.conf
  echo -e \"\n Modificiram desktop ikone Xfce4 DE-a...\"
@@ -678,8 +676,8 @@ fi
 if ! [ -d /home/$Korisnik/Videos ]; then
  mkdir /home/$Korisnik/Videos
 fi
-echo -e \"\n Dodajem boju za grep naredbu...\"
-echo -e \"alias grep='grep --color=auto'\" >> /home/$Korisnik/.bashrc
+echo -e \"\n Dodajem aliase...\"
+echo -e \"alias la='ls -a'\nalias ll='ls -la'\nalias grep='grep --color=auto'\" >> /etc/bash.bashrc
 echo -e \"\n Predajem vlasništvo /home/$Korisnik mape korisniku $Korisnik...\"
 chown -R $Korisnik /home/$Korisnik
 echo -e \"\n Radim xdg-user-dirs-update...\"
@@ -699,7 +697,6 @@ d*|y*)
  fi
  if [ -e /etc/gdm/custom.conf ]; then
   sed -i '/daemon/ a\AutomaticLogin=$Korisnik\nAutomaticLoginEnable=True' /etc/gdm/custom.conf # Thnx, vision! :)
-  #sed -i 's/daemon\]/daemon\]\nAutomaticLogin=$Korisnik\nAutomaticLoginEnable=True/' /etc/gdm/custom.conf # Radi, ali ovo iznad je bolje
  fi
  if [ -e /etc/lxdm/lxdm.conf ]; then
   sed -i 's/# autologin=dgod/autologin=$Korisnik/g' /etc/lxdm/lxdm.conf
