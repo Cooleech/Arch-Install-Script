@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.82        #
+# Which	 : version 6.83        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -69,7 +69,7 @@ EnterDE="Enter a letter beside the DE you wish to install"
 IllPickLater="None. I'll install DE or WM later"
 AutoLoginAs="Would you like to use autologin for"
 AtLogin="at login"
-NumLockOn="Would you like to have Num Lock turned on $AtLogin"
+NumLockOn="Would you like to have Num Lock turned on $AtLogin (doesn't work on Gnome (yet))"
 WillBeOn="will be turned on"
 WillBeOff="will be turned off"
 NoDEorWMinstall="There won't be any DE or WM installation, so after base install you can\n do it by canceling reboot and reentering chroot enviroment manualy"
@@ -147,7 +147,7 @@ EnterDE="Upišite slovo pored DE-a koji želite instalalirati"
 IllPickLater="Nijedan. Kasnije ću instalirati DE ili WM"
 AutoLoginAs="Želite li biti automatski ulogirani kao"
 AtLogin="pri logiranju"
-NumLockOn="Želite li imati uključen Num Lock $AtLogin u sustav"
+NumLockOn="Želite li imati uključen Num Lock $AtLogin u sustav (ne radi na Gnomeu (zasad))"
 WillBeOn="bit će uključen"
 WillBeOff="neće biti uključen"
 NoDEorWMinstall="Neće biti instaliran nikakav DE ili WM, no nakon instalacije možete\n otkazati reboot i instalirati što želite ponovnim ulaskom u chroot okruženje"
@@ -506,7 +506,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.83        #
+# Which  : version 6.84        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -536,7 +536,7 @@ hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
 pacman-db-upgrade # Fix za starije iso datoteke
-pacman -Sy --noconfirm alsa-plugins alsa-utils bc dialog dnsmasq dosfstools firefox flac flashplugin gksu grub-bios gstreamer0.10-plugins gvfs lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp openssh os-prober p7zip perl-data-dump ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-fbdev xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xorg-server xorg-server-utils xorg-xclock xorg-xinit xterm vorbis-tools zip$TouchpadDriver
+pacman -Sy --noconfirm alsa-firmware alsa-plugins alsa-utils bc dialog dnsmasq dosfstools firefox flac flashplugin gksu grub-bios gstreamer0.10-plugins gvfs lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp openssh os-prober p7zip perl-data-dump pulseaudio pulseaudio-alsa ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-fbdev xf86-video-intel xf86-video-nouveau xf86-video-nv xf86-video-sis xf86-video-vesa xorg-server xorg-server-utils xorg-xclock xorg-xinit xterm vorbis-tools zip$TouchpadDriver
 if [ \$? != 0 ]; then
  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
  read -p \"\"
