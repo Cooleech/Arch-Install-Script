@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.83        #
+# Which	 : version 6.84        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -49,6 +49,7 @@ WhichKeyLayout="Which keyboard layout would you like to use"
 Croatian="Croatian"
 English="English"
 Other="Other"
+Wrong="Wrong"
 SetCroatian="Now you are using croatian"
 SetAmerican="Now you are using american"
 KeyboardLayout="keyboard layout"
@@ -88,7 +89,8 @@ AllInfoIneed="That's it. I've got enough to proceed with the installation.\n Jus
 AddFastMir="Adding 5 fastest mirrors. This will take a while.\n\n  In the meantime, you could visit this nice web-page (in croatian)"
 InstallEnd="INSTALLATION ENDED"
 EnjoyWith="Enjoy with your new"
-EnterTo="Enter to"
+UnmountAllPart="Unmounting all partitions..."
+RebootIn="Rebooting in 5 seconds..."
 ;;
 *)
 EnterYourUsername="Upišite svoje ( \e[36mkorisničko\e[0m ) ime"
@@ -127,6 +129,7 @@ WhichKeyLayout="Koji raspored tipkovnice ( keyboard layout ) želite koristiti"
 Croatian="Hrvatski"
 English="Američki"
 Other="Ostali"
+Wrong="Neispravan"
 SetCroatian="Postavljen je hrvatski"
 SetAmerican="Postavljen je američki"
 KeyboardLayout="raspored tipkovnice"
@@ -166,7 +169,8 @@ AllInfoIneed="To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\
 AddFastMir="Dodavanje 5 najbržih mirrora. Ovo će malo potrajati.\n\n  U međuvremenu, možete posjetiti stranicu udruge"
 InstallEnd="KRAJ INSTALACIJE"
 EnjoyWith="Sretno uz novoinstalirani"
-EnterTo="Enter za"
+UnmountAllPart="Odmontiravanje svih particija..."
+RebootIn="Reboot za 5 sekundi..."
 ;;
 esac
 X11Layouts="af al am ara at az ba bd be bg br brai bt bw by ca cd ch cm cn cz de dk ee epo es et fi fo fr gb ge gh gn gr hr hu ie il in iq ir is it jp ke kg kh kr kz la latam lk lt lv ma mao md me mk ml mm mn mt mv nec_vndr/jp ng nl no np ph pk pl pt ro rs ru se si sk sn sy th tj tm tr tw tz ua us uz vn za"
@@ -181,7 +185,7 @@ case "$X11Layouts" in
  echo -e "\n $LayoutAfterInstall \e[1;36m${Layout^^}\e[0m" && CONTINUE_OR_CANCEL
 ;;
 *)
- echo -e "\n \e[31m*** ERROR / GREŠKA ***\e[0m\n\n Bad layout! / Krivi raspored tipki!\n"
+ echo -e "\n \e[31m*** $Error ***\e[0m\n\n $Wrong $KeyboardLayout!\n"
  sleep 2
  ENTER_KEYBOARD_LAYOUT
 ;;
@@ -324,7 +328,6 @@ echo -e "\n \e[1;31m* $Error *\e[0m\n\n $PassMismatch!\n"
 CONTINUE_OR_CANCEL
 }
 #==============================================================================#
-ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
 setfont Lat2-Terminus16 # Postavljam font (podržava sva naša slova)
 clear
 echo -e "\n\e[36m *******************************************************************************\n\t$Welcome \e[36mby \e[1;36mCooleech\e[0m\t\e[36m\n *******************************************************************************\e[0m
@@ -337,12 +340,12 @@ case "$PostavTipki" in
 h*|"")
  loadkeys croat # Postavi tipkovnicu na hrvatski layout
  Layout="hr"
- echo -e "\n \e[1;36mINFO:\e[0m $SetCroatian (\e[1;36m HR \e[0m) $KeyboardLayout!\n" && CONTINUE_OR_CANCEL
+ echo -e "\n \e[1;36mINFO:\e[0m $SetCroatian (\e[1;36m HR \e[0m) $KeyboardLayout.\n" && CONTINUE_OR_CANCEL
 ;;
 e*)
  loadkeys us # Postavi tipkovnicu na američki layout
  Layout="us"
- echo -e "\n \e[1;36mINFO:\e[0m $SetAmerican (\e[1;36m US \e[0m) $KeyboardLayout!\n" && CONTINUE_OR_CANCEL
+ echo -e "\n \e[1;36mINFO:\e[0m $SetAmerican (\e[1;36m US \e[0m) $KeyboardLayout.\n" && CONTINUE_OR_CANCEL
 ;;
 *)
  loadkeys us # Postavi tipkovnicu na američki layout
@@ -727,9 +730,9 @@ rm -f /etc/ArchChroot" > /mnt/etc/ArchChroot
 echo -e "sh /etc/ArchChroot\nexit" > /mnt/root/.bashrc
 arch-chroot /mnt /bin/bash
 clear
-echo -e "\n Odmontiravanje montiranih particija..."
+echo -e "\n $UnmountAllPart"
 umount -R /mnt
 swapoff -a
 echo -e "\n\e[36m*********************************\n*\t\e[37m$InstallEnd\e[36m\t*\n*********************************\e[0m\n\n $EnjoyWith \e[1;36mArch Linux \e[1;33m:)\e[0m\n"
-sleep 5 | echo -e "\n Reboot za 5 sekundi...\n\n Rebooting in 5 seconds..."
+sleep 5 | echo -e "\n $RebootIn"
 reboot
