@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.84        #
+# Which	 : version 6.85        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -22,7 +22,8 @@ ReenterUserPass="Reenter password for user"
 EnterRootPass="Enter password for \e[1;31mroot\e[0m"
 ReenterRootPass="Reenter password for \e[1;31mroot\e[0m"
 DisplayDisks="Available disks"
-EnterDiskToPart="Enter which disk you wish to partition"
+EnterDiskToPart="Enter which disk you wish to use and/or partition"
+ToSkipPart="to skip partitioning just close cfdisk"
 Without="WITHOUT"
 And="and"
 Eg="eg"
@@ -86,7 +87,7 @@ YesTo="yes, to"
 YesIfSel="yes ( if selected"
 KeyLayout="Keyboard"
 AllInfoIneed="That's it. I've got enough to proceed with the installation.\n Just sit back and relax until installation finishes"
-AddFastMir="Adding 5 fastest mirrors. This will take a while.\n\n  In the meantime, you could visit this nice web-page (in croatian)"
+AddFastMir="Adding 5 fastest mirrors. This will take a while.\n\n"
 InstallEnd="INSTALLATION ENDED"
 EnjoyWith="Enjoy with your new"
 UnmountAllPart="Unmounting all partitions..."
@@ -102,7 +103,8 @@ ReenterUserPass="Ponovo upišite lozinku za korisnika"
 EnterRootPass="Upišite lozinku za \e[1;31mroot\e[0m korisnika"
 ReenterRootPass="Ponovo upišite lozinku za \e[1;31mroot\e[0m korisnika"
 DisplayDisks="Dostupni diskovi"
-EnterDiskToPart="Upišite koji disk želite patricionirati"
+EnterDiskToPart="Upišite koji disk želite koristiti i/ili patricionirati"
+ToSkipPart="za preskok particioniranja samo zatvorite cfdisk"
 Without="BEZ"
 And="i"
 Eg="npr"
@@ -166,7 +168,7 @@ YesTo="da, u"
 YesIfSel="da ( ako je odabran"
 KeyLayout="Tipkovnica"
 AllInfoIneed="To bi bilo to. Imam dovoljno informacija za nastavak instalacije.\n Samo sjednite i opustite se dok se instalacija ne obavi do kraja"
-AddFastMir="Dodavanje 5 najbržih mirrora. Ovo će malo potrajati.\n\n  U međuvremenu, možete posjetiti stranicu udruge"
+AddFastMir="Dodavanje 5 najbržih mirrora. Ovo će malo potrajati.\n\n"
 InstallEnd="KRAJ INSTALACIJE"
 EnjoyWith="Sretno uz novoinstalirani"
 UnmountAllPart="Odmontiravanje svih particija..."
@@ -260,7 +262,7 @@ function PARTITIONING {
 clear
 echo -e "\n $DisplayDisks:"
 lsblk | grep -v "rom\|loop\|airoot"
-echo -e "\n $EnterDiskToPart ( $Without \e[35m/dev/\e[0m $And $Without \e[35m$Numbers\e[0m, $Eg. \e[36msda\e[0m ):\n"
+echo -e "\n $EnterDiskToPart ( $Without \e[35m/dev/\e[0m $And $Without \e[35m$Numbers\e[0m, $Eg. \e[36msda\e[0m, $ToSkipPart ):\n"
 read Disk
 Disk="${Disk,,}"
 Disk="${Disk//'/dev/'/}" # Ukloni /dev/ (za svaki slučaj :))
@@ -490,8 +492,9 @@ fi
 clear
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup # Bekapiranje mirrorliste
 sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiraj sve mirrore za test brzine
-echo -e "\n $AddFastMir \e[32mSO\e[35mK\e[0m:\n\n\t\e[1;34mhttp://sok.hr\e[0m\n" # Reklama za udrugu SOK
-rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
+echo -e "\n $AddFastMir"
+rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist # Ocjenjivanje brzine mirrora i upis
+watch -t tail -n 5 /etc/pacman.d/mirrorlist # Prikaz ocjenjivanja mirrora i upisivanja
 clear
 echo -e "\n Uređivanje pacmana u live modu..\n"
 sed -i 's/#Color/Color/' /etc/pacman.conf
@@ -509,7 +512,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.85        #
+# Which  : version 6.86        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -530,8 +533,8 @@ sed -i 's/#hr_HR/hr_HR/g' /etc/locale.gen
 locale-gen
 echo \"LANG=en_IE.UTF-8\" > /etc/locale.conf
 export LANG=en_IE.UTF-8
-echo -e \"\n Postavljam keymap i font u vconsole.conf...\"
-echo -e \"KEYMAP=croat\nFONT=Lat2Terminus16\" > /etc/vconsole.conf
+echo -e \"\n Postavljam keymap u vconsole.conf...\"
+echo -e \"KEYMAP=croat\" > /etc/vconsole.conf # <=== Treba dodati opciju za odabir! ===
 echo -e \"\n Postavljam zonu lokalnog vremena...\"
 ln -s /usr/share/zoneinfo/Europe/Zagreb /etc/localtime
 echo -e \"\n Postavljam hwclock na UTC...\"
