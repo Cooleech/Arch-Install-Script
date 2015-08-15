@@ -493,7 +493,7 @@ clear
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup # Bekapiranje mirrorliste
 sed '/^#\S/ s|#||' -i /etc/pacman.d/mirrorlist.backup # Otkomentiraj sve mirrore za test brzine
 echo -e "\n $AddFastMir"
-rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist | watch -t tail -n 5 /etc/pacman.d/mirrorlist # Prikaz ocjenjivanja mirrora i upisivanja
+rankmirrors -n 5 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist #| watch -t tail -n 5 /etc/pacman.d/mirrorlist # Prikaz ocjenjivanja mirrora i upisivanja
 clear
 echo -e "\n Uređivanje pacmana u live modu..\n"
 sed -i 's/#Color/Color/' /etc/pacman.conf
