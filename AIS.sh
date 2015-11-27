@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.87        #
+# Which	 : version 6.88        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -124,7 +124,7 @@ ContinueOrCancel="Pritisnite \e[1;32mEnter\e[0m za nastavak ili \e[1;31mCtrl\e[0
 PassEmpty="Lozinka ne može biti prazna"
 PassMismatch="Lozinke se ne podudaraju"
 Welcome="Dobrodošli u pojednostavljenu instalaciju \e[1;36mArch Linuxa\e[0m"
-WhyThisScript="Ova skripta je tu da vam maksimalno olakša Arch Linux instalaciju"
+WhyThisScript="Ova skripta je tu da vam olakša instalaciju Arch Linuxa"
 YourRisk="KORISTITE JE NA VLASTITU ODGOVORNOST"
 InfoGathering="Za početak, prikupit ćemo neke informacije. Pa, krenimo"
 WhichKeyLayout="Koji raspored tipkovnice ( keyboard layout ) želite koristiti"
@@ -333,9 +333,16 @@ CONTINUE_OR_CANCEL
 setfont Lat2-Terminus16 # Postavljam font (podržava sva naša slova)
 clear
 echo -e "\n\e[36m *******************************************************************************\n\t$Welcome \e[36mby \e[1;36mCooleech\e[0m\t\e[36m\n *******************************************************************************\e[0m
-\n\t$WhyThisScript!\n
-\t\e[31m* * * $Warning: $YourRisk * * *\n\e[0m
-\t$InfoGathering! \e[1;33m:)\e[0m\n\n
+\e[1;36m        A
+       ARA
+       RCRA  \e[0m$WhyThisScript!\e[1;36m
+     ARCHCRA
+    ARCHLHCRA  \e[31m* * * $Warning: $YourRisk * * *\e[0m\e[1;36m
+   ARCHLILHCRA
+  ARCHL   LHC    \e[0m$InfoGathering! \e[1;33m:)\e[0m\e[1;36m
+ ARCHL     LHCRA
+AR             RA
+\e[0m\n
  $WhichKeyLayout?\n\n \e[36mh\e[0m = \e[36m$Croatian\e[0m\t( HR ) <= default\n\n \e[36me\e[0m = \e[36m$English\e[0m\t( US )\n\n \e[36mo\e[0m = \e[36m$Other\e[0m\t( ?? )\n"
 read PostavTipki
 case "$PostavTipki" in
