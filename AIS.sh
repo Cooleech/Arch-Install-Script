@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.91        #
+# Which	 : version 6.92        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -414,12 +414,11 @@ if [ "$ImeHosta" = "" ]; then
 fi
 NET_DEVICE
 clear
-echo -e "\n $EnterDE:\n\n \e[36mN\e[0m = \e[36m$IllPickLater\e[0m <= default\n\n \e[36mG\e[0m = \e[36mGNOME\n
- M\e[0m = \e[36mMATE\n\n X\e[0m = \e[36mXfce\n\n L\e[0m = \e[36mLXDE\e[0m\n"
+echo -e "\n $EnterDE:\n\n \e[36mN\e[0m = \e[36m$IllPickLater\e[0m <= default\n\n \e[36mC\e[0m = \e[36mCinnamon\n\n \e[36mG\e[0m = \e[36mGNOME\n\n M\e[0m = \e[36mMATE\n\n X\e[0m = \e[36mXfce\n\n L\e[0m = \e[36mLXDE\e[0m\n"
 read DEzaInst
 DEzaInst="${DEzaInst,,}"
 case "$DEzaInst" in
-g*|m*|x*|l*)
+c*|g*|l*|m*|x*)
  clear
  echo -e "\n $AutoLoginAs \e[1;36m$Korisnik\e[0m? ( $yN )"
  read AutoLogin
@@ -518,7 +517,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.91        #
+# Which  : version 6.92        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -542,7 +541,7 @@ export LANG=en_IE.UTF-8
 echo -e \"\n Postavljam keymap u vconsole.conf...\"
 echo -e \"KEYMAP=croat\" > /etc/vconsole.conf # <=== Treba dodati opciju za odabir! ===
 echo -e \"\n Postavljam zonu lokalnog vremena...\"
-ln -s /usr/share/zoneinfo/Europe/Zagreb /etc/localtime
+ln -sf /usr/share/zoneinfo/Europe/Zagreb /etc/localtime
 echo -e \"\n Postavljam hwclock na UTC...\"
 hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
@@ -567,7 +566,7 @@ echo -e \"\n Podešavam vrijeme...\"
 ntpd -qg
 hwclock -w
 case \"$DEzaInst\" in
-g*|m*|x*|l*)
+c*|g*|l*|m*|x*)
  echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
  pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
  if [ \$? != 0 ]; then
@@ -590,6 +589,18 @@ echo -e \"polkit.addRule(function(action, subject) {\n\tif (action.id.indexOf(\\
 	\treturn polkit.Result.YES;\n\t}\n});\" > /etc/polkit-1/rules.d/50-org.freedesktop.NetworkManager.rules
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and sudo for all
 case \"$DEzaInst\" in
+c*)
+ echo -e \"\n Pokrećem instalaciju Cinnamona...\"
+ pacman -Sy --noconfirm cinnamon qt vlc
+ if [ \$? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
+  read -p \"\"
+ fi
+ systemctl enable lxdm.service
+ sed -i 's/# session/session/g' /etc/lxdm/lxdm.conf
+ sed -i 's/startlxde/cinnamon-session/g' /etc/lxdm/lxdm.conf
+# echo -e \"exec cinnamon-session\" >> /home/$Korisnik/.xinitrc
+;;
 g*)
  echo -e \"\n Pokrećem instalaciju GNOME-a...\"
  pacman -Sy --noconfirm gnome gnome-extra qt vlc
@@ -599,6 +610,16 @@ g*)
  fi
  systemctl enable gdm.service
  echo -e \"exec gnome-session\" >> /home/$Korisnik/.xinitrc
+;;
+l*)
+ echo -e \"\n Pokrećem instalaciju LXDE-a...\"
+ pacman -Sy --noconfirm galculator gnome-mplayer leafpad lxde lxdm obconf xarchiver qt vlc zenity
+ if [ \$? != 0 ]; then
+  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
+  read -p \"\"
+ fi
+ systemctl enable lxdm.service
+# echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
 ;;
 m*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
@@ -610,7 +631,7 @@ m*)
  systemctl enable lxdm.service
  sed -i 's/# session/session/g' /etc/lxdm/lxdm.conf
  sed -i 's/startlxde/mate-session/g' /etc/lxdm/lxdm.conf
- echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
+# echo -e \"exec mate-session\" >> /home/$Korisnik/.xinitrc
 ;;
 x*)
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
@@ -629,17 +650,7 @@ x*)
 	XfdesktopIconView::selected-shadow-y-offset = 0\n\tXfdesktopIconView::selected-shadow-color = \\\"#000000\\\"
 	fg[NORMAL] = \\\"#ffffff\\\"\n\tfg[SELECTED] = \\\"#ffffff\\\"\n\tfg[ACTIVE] = \\\"#ffffff\\\" }
 	widget_class \\\"*XfdesktopIconView*\\\" style \\\"xfdesktop-icon-view\\\"\" >> /home/$Korisnik/.gtkrc-2.0
- echo -e \"exec startxfce4\" >> /home/$Korisnik/.xinitrc
-;;
-l*)
- echo -e \"\n Pokrećem instalaciju LXDE-a...\"
- pacman -Sy --noconfirm galculator gnome-mplayer leafpad lxde lxdm obconf xarchiver qt vlc zenity
- if [ \$? != 0 ]; then
-  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
-  read -p \"\"
- fi
- systemctl enable lxdm.service
- echo -e \"exec startlxde\" >> /home/$Korisnik/.xinitrc
+# echo -e \"exec startxfce4\" >> /home/$Korisnik/.xinitrc
 ;;
 *)
  echo -e \"\n \e[1;36mINFO:\e[31m $DEinstNotSel!\e[0m\"
