@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.94        #
+# Which	 : version 6.95        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -394,16 +394,16 @@ d*|y*|"")
 esac
 echo -e "\n $EnterPartitionNumber swap\n\t( $Without \e[1;33m/dev/$Disk\e[0m, $ToSkip ):"
 read SwapPart
-SwapPart="${SwapPart//'/dev/$Disk'/}" # Za svaki slučaj... :)
+if [ "$SwapPart" = "" ]; then
+ Swap=" Swap: ništa ( $NoSwapPart )"
+else
+ SwapPart="${SwapPart//'/dev/$Disk'/}" # Za svaki slučaj... :)
+ Swap=" Swap: /dev/$Disk$SwapPart"
+fi
 if [ "$HomePart" = "" ]; then
  Home=" Home: /dev/$Disk$RootPart ( $NoSepHomePart )"
 else
  Home=" Home: /dev/$Disk$HomePart"
-fi
-if [ "$SwapPart" = "" ]; then
- Swap=" Swap: ništa ( $NoSwapPart )"
-else
- Swap=" Swap: /dev/$Disk$SwapPart"
 fi
 clear
 echo -e "\n $EnterHostName \e[36marchlinux\e[0m ):\n"
@@ -518,7 +518,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.94        #
+# Which  : version 6.95        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -592,7 +592,7 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and s
 case \"$DEzaInst\" in
 c*)
  echo -e \"\n Pokrećem instalaciju Cinnamona...\"
- pacman -Sy --noconfirm cinnamon qt vlc
+ pacman -Sy --noconfirm cinnamon qt4 vlc
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
@@ -604,7 +604,7 @@ c*)
 ;;
 g*)
  echo -e \"\n Pokrećem instalaciju GNOME-a...\"
- pacman -Sy --noconfirm gnome gnome-extra qt vlc
+ pacman -Sy --noconfirm gnome gnome-extra qt4 vlc
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
@@ -614,7 +614,7 @@ g*)
 ;;
 l*)
  echo -e \"\n Pokrećem instalaciju LXDE-a...\"
- pacman -Sy --noconfirm galculator gnome-mplayer leafpad lxde lxdm obconf xarchiver qt vlc zenity
+ pacman -Sy --noconfirm galculator gnome-mplayer leafpad lxde lxdm obconf xarchiver qt4 vlc zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
@@ -624,7 +624,7 @@ l*)
 ;;
 m*)
  echo -e \"\n Pokrećem instalaciju MATE-a...\"
- pacman -Sy --noconfirm deadbeef gtk-engine-murrine lxdm mate mate-extra qt vlc zenity
+ pacman -Sy --noconfirm deadbeef gtk-engine-murrine lxdm mate mate-extra qt4 vlc zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
@@ -636,7 +636,7 @@ m*)
 ;;
 x*)
  echo -e \"\n Pokrećem instalaciju Xfce4 DE-a...\"
- pacman -Sy --noconfirm deadbeef lxdm thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd qt vlc zenity
+ pacman -Sy --noconfirm deadbeef lxdm thunar-archive-plugin thunar-volman xarchiver xfce4 xfce4-goodies xfce4-notifyd qt4 vlc zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
