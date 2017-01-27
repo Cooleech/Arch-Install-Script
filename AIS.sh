@@ -517,7 +517,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.92        #
+# Which  : version 6.93        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -659,9 +659,6 @@ esac
 case \"$NumLock\" in
 d*)
  echo -e \"\n Uključujem numlock pri logiranju...\"
- if [ -e /usr/share/config/kdm/kdmrc ]; then
-  sed -i 's/#NumLock=Off/NumLock=On/g' /usr/share/config/kdm/kdmrc
- fi
  if [ -e /etc/lxdm/lxdm.conf ]; then
   sed -i 's/# numlock=0/numlock=1/g' /etc/lxdm/lxdm.conf
  fi
@@ -703,15 +700,11 @@ xdg-user-dirs-update --force --set VIDEOS /home/$Korisnik/Videos
 case \"$AutoLogin\" in
 d*|y*)
  echo -e \"\n Postavljam auto-login...\"
- if [ -e /usr/share/config/kdm/kdmrc ]; then
-  sed -i 's/#AutoLoginUser=fred/AutoLoginUser=$Korisnik/g' /usr/share/config/kdm/kdmrc
-  sed -i 's/#AutoLoginEnable/AutoLoginEnable/g' /usr/share/config/kdm/kdmrc
- fi
  if [ -e /etc/gdm/custom.conf ]; then
-  sed -i '/daemon/ a\AutomaticLogin=$Korisnik\nAutomaticLoginEnable=True' /etc/gdm/custom.conf # Thnx, vision! :)
+  sed -i \"/daemon/ a\AutomaticLogin=$Korisnik\nAutomaticLoginEnable=True\" /etc/gdm/custom.conf # Thnx, vision! :)
  fi
  if [ -e /etc/lxdm/lxdm.conf ]; then
-  sed -i 's/# autologin=dgod/autologin=$Korisnik/g' /etc/lxdm/lxdm.conf
+  sed -i \"s/# autologin=dgod/autologin=$Korisnik/g\" /etc/lxdm/lxdm.conf
  fi
 ;;
 esac
