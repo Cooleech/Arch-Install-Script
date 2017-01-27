@@ -592,7 +592,7 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and s
 case \"$DEzaInst\" in
 c*)
  echo -e \"\n Pokrećem instalaciju Cinnamona...\"
- pacman -Sy --noconfirm cinnamon qt4 vlc
+ pacman -Sy --noconfirm cinnamon lxdm qt4 vlc
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
