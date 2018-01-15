@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.96        #
+# Which	 : version 6.97        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -447,7 +447,7 @@ read Prijenosnik
 Prijenosnik="${Prijenosnik,,}"
 case "$Prijenosnik" in
 d*|y*)
- TouchpadDriver=" xf86-input-synaptics libsynaptics"
+ TouchpadDriver=" xf86-input-synaptics"
 ;;
 esac
 clear
@@ -518,7 +518,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.96        #
+# Which  : version 6.97        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
