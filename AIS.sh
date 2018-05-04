@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 6.99        #
+# Which	 : version 7.00        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -291,10 +291,10 @@ fi
 }
 
 function NET_DEVICE {
-ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
+#ln -sf /dev/null /etc/udev/rules.d/80-net-name-slot.rules # Preimenuj mrežne uređaje u "stara" imena
 clear
 echo -e "\n $CheckInternet...\n"
-ping -c1 google.com > /dev/null
+curl -s archlinux.org > /dev/null # Umjesto pinga jer ping ne radi u qemu virtualci
 if [ $? != 0 ]; then
  echo -e "\n $ConnectUsingWiFi? ( $Yn )"
  read Spajanje
@@ -305,7 +305,7 @@ if [ $? != 0 ]; then
  ;;
  esac
  echo -e "\n $CheckInternet...\n"
- sleep 2 && ping -c1 google.com > /dev/null
+ sleep 2 && curl -s archlinux.org > /dev/null
  if [ $? != 0 ]; then
   echo -e "\n \e[1;31m* $Error *\e[0m\n\n $NoInternet.\n"
   CONTINUE_OR_CANCEL
@@ -518,7 +518,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 6.99        #
+# Which  : version 7.00        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -568,7 +568,7 @@ ntpd -qg
 hwclock -w
 case \"$DEzaInst\" in
 c*|g*|l*|m*|x*)
- echo -e \"\n Instalacija gnome-keyringa i teme gnome-themes-standard...\"
+ echo -e \"\n Instalacija gnome dodataka...\"
  pacman -Sy --noconfirm gnome-keyring gnome-themes-standard
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
