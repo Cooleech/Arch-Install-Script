@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################
 # What	 : Arch-Install-Script #
-# Which	 : version 7.00        #
+# Which	 : version 7.01        #
 # Who	 : Cooleech            #
 # Where  : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -518,7 +518,7 @@ genfstab -p /mnt | sed 's/rw,relatime,data=ordered/defaults,relatime/' >> /mnt/e
 echo "#!/bin/bash
 ################################
 # What	 : ArchChroot          #
-# Which  : version 7.00        #
+# Which  : version 7.01        #
 # Who	 : Cooleech            #
 # Where	 : GPLv2               #
 # Write	 : cooleechATgmail.com #
@@ -548,7 +548,7 @@ hwclock --systohc --utc
 echo -e \"\n Postavljam ime hosta...\"
 echo \"$ImeHosta\" > /etc/hostname
 pacman-db-upgrade # Fix za starije iso datoteke
-pacman -Sy --noconfirm alsa-firmware alsa-plugins alsa-utils bc dialog dnsmasq dosfstools firefox flac flashplugin grub-bios gstreamer gvfs lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp openssh os-prober p7zip perl-data-dump pulseaudio pulseaudio-alsa sudo ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-fbdev xf86-video-intel xf86-video-nouveau xf86-video-vesa xorg-server xorg-xclock xorg-xinit xterm vorbis-tools zip$TouchpadDriver
+pacman -Sy --noconfirm alsa-firmware alsa-plugins alsa-utils bc dialog dnsmasq dosfstools firefox flac grub-bios gstreamer gvfs lshw mtools net-tools network-manager-applet networkmanager-dispatcher-ntpd ntfs-3g ntp openssh os-prober p7zip perl-data-dump pulseaudio pulseaudio-alsa sudo ttf-dejavu ttf-droid unrar unzip wget wireless_tools wpa_actiond wpa_supplicant xcursor-vanilla-dmz xdg-user-dirs xf86-input-keyboard xf86-input-mouse xf86-video-ati xf86-video-fbdev xf86-video-intel xf86-video-nouveau xf86-video-vesa xorg-server xorg-xclock xorg-xinit xorg-xrandr xterm vorbis-tools zip$TouchpadDriver
 if [ \$? != 0 ]; then
  echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
  read -p \"\"
@@ -592,7 +592,7 @@ sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' /etc/sudoers # ...and s
 case \"$DEzaInst\" in
 c*)
  echo -e \"\n Pokrećem instalaciju Cinnamona...\"
- pacman -Sy --noconfirm cinnamon lxdm qt4 vlc
+ pacman -Sy --noconfirm cinnamon lxdm qt4 vlc zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
@@ -604,7 +604,7 @@ c*)
 ;;
 g*)
  echo -e \"\n Pokrećem instalaciju GNOME-a...\"
- pacman -Sy --noconfirm gnome gnome-extra qt4 vlc
+ pacman -Sy --noconfirm gnome gnome-extra qt4 vlc zenity
  if [ \$? != 0 ]; then
   echo -e \"\n $Error *\n\n Pritisnite Enter za nastavak...\n Press Enter to continue...\n\n\"
   read -p \"\"
